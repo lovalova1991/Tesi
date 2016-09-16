@@ -1,4 +1,3 @@
-
 from Types import Excel, Prolog
 from Types.Result import ResultDef
 
@@ -30,7 +29,7 @@ def start():
 
         for excelelement in excelist:           #per ogni elemento nella lista del file excel
 
-            if str(excelelement.com) == "None":
+            if str(excelelement.com) == "None" or str(excelelement.com) == "":
 
                 if str(prologelement.fullname).lower() == (str(excelelement.nomeCorso)).lower():
 
@@ -94,8 +93,8 @@ def start():
                                                 lab, numSlot, slotDur, type, typeHint, link))
 
     for excelelement in excelist:
-        if(str(excelelement.nomeCorso).lower() not in listnames) and (str(excelelement.cdl) == "EI" or str(excelelement.cdl) == "ETM" or str(excelelement.cdl) == "IAM") and excelelement.periodo == "1S":
-            newCorsi.append(ResultDef(excelelement.nomeCorso, excelelement.docente, None, "Inserisci..", "Inserisci..", None, str(excelelement.ore / 12),
+        if(str(excelelement.nomeCorso).lower() not in listnames) and str(excelelement.com) == "None" and (str(excelelement.cdl) == "EI" or str(excelelement.cdl) == "ETM" or str(excelelement.cdl) == "IAM") and excelelement.periodo == "1S":
+            newCorsi.append(ResultDef(excelelement.nomeCorso, excelelement.docente, "Inserisci..", "Inserisci..", "Inserisci..", "Inserisci..", str(excelelement.ore / 12),
                                     "Inserisci..", "Inserisci..", "Inserisci..", "Inserisci..", "Inserisci...", "Inserisci.."))
 
 

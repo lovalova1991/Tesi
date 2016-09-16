@@ -1,7 +1,7 @@
-from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from Helpers import Readers, Model
-from GUI import Resolution
+from GUI import Resolution, Colors
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow, x, y):
@@ -120,6 +120,8 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuInfo.menuAction())
 
         self.retranslateUi(MainWindow)
+
+        self.prologView.verticalScrollBar().valueChanged.connect(self.onValueChanged)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -143,6 +145,9 @@ class Ui_MainWindow(object):
         self.actionGitHub_Repo.setText(_translate("MainWindow", "GitHub Repo"))
         self.actionAbout.setText(_translate("MainWindow", "About.."))
 
+    def onValueChanged(self):
+        self.excelView.scrollTo(self.prologView.currentIndex())
+
     def pickfile(self):
         filename, _ = QFileDialog.getOpenFileName()
         if str(filename).endswith(".xlsx"):
@@ -150,11 +155,13 @@ class Ui_MainWindow(object):
             self.excelLoaded.setText("Fatto!")
             self.excelLoaded.setText("File Excel selezionato: " + filename)
             Model.CreateModel().createExcelModel(self.excelView)
+            #Colors.Highlight().highlightCells(self.prologView, self.excelView)
         if str(filename).endswith(".pl"):
             Readers.loadProlog(filename)
             self.prologLoaded.setText("Fatto!")
             self.prologLoaded.setText("File Prolog selezionato: " + filename)
             Model.CreateModel().createPrologModel(self.prologView)
+
 
 if __name__ == "__main__":
     import sys

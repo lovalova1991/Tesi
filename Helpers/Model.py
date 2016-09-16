@@ -1,8 +1,11 @@
+from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QStandardItem
 from PyQt5.QtGui import QStandardItemModel
-from PyQt5.QtWidgets import QComboBox
 from PyQt5.QtWidgets import QMessageBox
-from Types import Prolog
+from PyQt5.QtWidgets import QPushButton
+
+from Types import Prolog, Excel
 
 from Helpers import Compare
 
@@ -10,39 +13,66 @@ class CreateModel:
 
     def createPrologModel(self, prologView):
         listProlog = Prolog.getPrologList()
+        listExcel = Excel.getExcelList()
+
+        for element in listProlog:
+            if str(element.fullname).startswith("[pre"):
+                listProlog.remove(element)
 
         self.tableModel = QStandardItemModel()
-        self.tableModel.setHorizontalHeaderItem(0, QStandardItem("Nome Corso"))
-        self.tableModel.setHorizontalHeaderItem(1, QStandardItem("Docente"))
-        self.tableModel.setHorizontalHeaderItem(2, QStandardItem("Numero Studenti"))
-        self.tableModel.setHorizontalHeaderItem(3, QStandardItem("Seguito Da"))
-        self.tableModel.setHorizontalHeaderItem(4, QStandardItem("Numero Ore"))
-        self.tableModel.setHorizontalHeaderItem(5, QStandardItem("Laboratorio"))
-        self.tableModel.setHorizontalHeaderItem(6, QStandardItem("Numero Slot"))
-        self.tableModel.setHorizontalHeaderItem(7, QStandardItem("Durata Slot"))
-        self.tableModel.setHorizontalHeaderItem(8, QStandardItem("Tipo"))
-        self.tableModel.setHorizontalHeaderItem(9, QStandardItem("Link"))
+        self.tableModel.setHorizontalHeaderItem(0, QStandardItem("Elimina"))
+        self.tableModel.setHorizontalHeaderItem(1, QStandardItem("Nome Corso"))
+        self.tableModel.setHorizontalHeaderItem(2, QStandardItem("Nome Schematico"))
+        self.tableModel.setHorizontalHeaderItem(3, QStandardItem("Docente"))
+        self.tableModel.setHorizontalHeaderItem(4, QStandardItem("Numero Studenti"))
+        self.tableModel.setHorizontalHeaderItem(5, QStandardItem("Seguito Da"))
+        self.tableModel.setHorizontalHeaderItem(6, QStandardItem("Numero Ore"))
+        self.tableModel.setHorizontalHeaderItem(7, QStandardItem("Laboratorio"))
+        self.tableModel.setHorizontalHeaderItem(8, QStandardItem("Numero Slot"))
+        self.tableModel.setHorizontalHeaderItem(9, QStandardItem("Durata Slot"))
+        self.tableModel.setHorizontalHeaderItem(10, QStandardItem("Tipo"))
+        self.tableModel.setHorizontalHeaderItem(11, QStandardItem("Link"))
+        self.tableModel.setHorizontalHeaderItem(12, QStandardItem("Commento"))
 
-        prologView.setModel(self.tableModel)
+
         for row in range(0, len(listProlog)):
-            self.tableModel.insertRow(row)
-            self.tableModel.setItem(row, 0, QStandardItem(str(listProlog[row].fullname)))
-            self.tableModel.setItem(row, 1, QStandardItem(str(listProlog[row].docente)))
-            self.tableModel.setItem(row, 2, QStandardItem(str(listProlog[row].numstudenti)))
-            self.tableModel.setItem(row, 3, QStandardItem(str(listProlog[row].seguitoda)))
-            self.tableModel.setItem(row, 4, QStandardItem(str(listProlog[row].numore)))
-            self.tableModel.setItem(row, 5, QStandardItem(str(listProlog[row].lab)))
-            self.tableModel.setItem(row, 6, QStandardItem(str(listProlog[row].numslot)))
-            self.tableModel.setItem(row, 7, QStandardItem(str(listProlog[row].slotdur)))
-            self.tableModel.setItem(row, 8, QStandardItem(str(listProlog[row].type)))
-            self.tableModel.setItem(row, 9, QStandardItem(str(listProlog[row].link)))
 
-        prologView.resizeColumnsToContents()
+            nomecorso = QStandardItem(str(listProlog[row].fullname))
+            shortName = QStandardItem(str(listProlog[row].nomecorso))
+            docente = QStandardItem(str(listProlog[row].docente))
+            numstudenti = QStandardItem(str(listProlog[row].numstudenti))
+            seguitoda = QStandardItem(str(listProlog[row].seguitoda))
+            numore = QStandardItem(str(listProlog[row].numore))
+            lab = QStandardItem(str(listProlog[row].lab))
+            numslot = QStandardItem(str(listProlog[row].numslot))
+            slotdur = QStandardItem(str(listProlog[row].slotdur))
+            type = QStandardItem(str(listProlog[row].type))
+            link = QStandardItem(str(listProlog[row].link))
+
+            self.tableModel.insertRow(row)
+
+            self.tableModel.setItem(row, 1, nomecorso)
+            self.tableModel.setItem(row, 2, shortName)
+            self.tableModel.setItem(row, 3, docente)
+            self.tableModel.setItem(row, 4, numstudenti)
+            self.tableModel.setItem(row, 5, seguitoda)
+            self.tableModel.setItem(row, 6, numore)
+            self.tableModel.setItem(row, 7, lab)
+            self.tableModel.setItem(row, 8, numslot)
+            self.tableModel.setItem(row, 9, slotdur)
+            self.tableModel.setItem(row, 10, type)
+            self.tableModel.setItem(row, 11, link)
+            self.tableModel.setItem(row, 12, QStandardItem("Commenta..."))
+
+            prologView.setModel(self.tableModel)
 
     def createExcelModel(self, excelView):
         listCorsi = Compare.start()
         listNewCorsi = Compare.getNewCorsi()
+        for element in listNewCorsi:
+            listCorsi.append(element)
 
+        #messagebox per controllare i nuovi corsi
         if (len(listNewCorsi) > 0):
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)
@@ -54,85 +84,77 @@ class CreateModel:
                 toPrint = str(toPrint) + "*" + str(element.nomecorso) + "\n"
             msg.setDetailedText(toPrint)
             msg.exec_()
-
-        self.tableModel = QStandardItemModel()
-        self.tableModel.setHorizontalHeaderItem(0, QStandardItem("Nome Corso"))
-        self.tableModel.setHorizontalHeaderItem(1, QStandardItem("Docente"))
-        self.tableModel.setHorizontalHeaderItem(2, QStandardItem("Numero Studenti"))
-        self.tableModel.setHorizontalHeaderItem(3, QStandardItem("Seguito Da"))
-        self.tableModel.setHorizontalHeaderItem(4, QStandardItem("Numero Ore"))
-        self.tableModel.setHorizontalHeaderItem(5, QStandardItem("Laboratorio"))
-        self.tableModel.setHorizontalHeaderItem(6, QStandardItem("Numero Slot"))
-        self.tableModel.setHorizontalHeaderItem(7, QStandardItem("Durata Slot"))
-        self.tableModel.setHorizontalHeaderItem(8, QStandardItem("Tipo"))
-        self.tableModel.setHorizontalHeaderItem(9, QStandardItem("Link"))
+        try:
+            self.tableModel = QStandardItemModel()
+            self.tableModel.setHorizontalHeaderItem(0, QStandardItem("Aggiungi a Prolog"))
+            self.tableModel.setHorizontalHeaderItem(1, QStandardItem("Nome Corso"))
+            self.tableModel.setHorizontalHeaderItem(2, QStandardItem("Docente"))
+            self.tableModel.setHorizontalHeaderItem(3, QStandardItem("Seguito Da"))
+            self.tableModel.setHorizontalHeaderItem(4, QStandardItem("Numero Ore"))
+            self.tableModel.setHorizontalHeaderItem(5, QStandardItem("Laboratorio"))
+            self.tableModel.setHorizontalHeaderItem(6, QStandardItem("Tipo"))
+        except AttributeError:
+            print("uops")
 
         excelView.setModel(self.tableModel)
 
         for row in range(0, len(listCorsi)):
+
+            nomecorso = QStandardItem(str(listCorsi[row].nomecorso))
+            docente = QStandardItem(str(listCorsi[row].docente))
+            seguitoda = QStandardItem(str(listCorsi[row].seguitoda))
+            numore = QStandardItem(str(listCorsi[row].numore))
+            lab = QStandardItem(str(listCorsi[row].lab))
+            type = QStandardItem(str(listCorsi[row].type))
+            docenteHint = QStandardItem(str(listCorsi[row].docenteHint.lower()))
+            numoreHint = QStandardItem(str(listCorsi[row].numOreHint))
+            typeHint = QStandardItem(str(listCorsi[row].typeHint))
+
             self.tableModel.insertRow(row)
-            self.tableModel.setItem(row, 0, QStandardItem(str(listCorsi[row].nomecorso)))
+
+            #se sono corsi nuovi li evidenzio
+            if listCorsi[row].seguitoda == "Inserisci.." and listCorsi[row].numore == "Inserisci.." and listCorsi[row].type == "Inserisci..":
+                nomecorso.setBackground(QBrush(QColor(100,200,100,100)))
+                docente.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                seguitoda.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                numore.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                lab.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                type.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                docenteHint.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                numoreHint.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                typeHint.setBackground(QBrush(QColor(100, 200, 100, 100)))
+
+            #button per spostamento
+            b = QPushButton()
+            b.setText("Aggiungi")
+            x = excelView.model().index(row, 0)
+            excelView.setIndexWidget(x, b)
+            #b.connect()
+
+            self.tableModel.setItem(row, 1, nomecorso)
 
             if (str(listCorsi[row].docente)) == str(None) or str(listCorsi[row].docente) == "":
-                c = QComboBox()
-                c.setEditable(True)
-                # c.setBackgroundRole(QColor("red"))
-                c.addItem(str(listCorsi[row].docenteHint).lower())
-                i = excelView.model().index(row, 1)
-                excelView.setIndexWidget(i, c)
+                docenteHint.setBackground(QBrush(QColor(100,100,100,200)))
+                self.tableModel.setItem(row, 2, docenteHint)
             else:
-                self.tableModel.setItem(row, 1, QStandardItem(str(listCorsi[row].docente)))
+                self.tableModel.setItem(row, 2, docente)
 
-            self.tableModel.setItem(row, 2, QStandardItem(str(listCorsi[row].numstudenti)))
-            self.tableModel.setItem(row, 3, QStandardItem(str(listCorsi[row].seguitoda)))
+            self.tableModel.setItem(row, 3, seguitoda)
 
             if (listCorsi[row].numore == None):
-                combo = QComboBox()
-                combo.setEditable(True)
-                combo.addItem("Inserisci..")
-                combo.addItem(str(listCorsi[row].numOreHint))
-                ind = excelView.model().index(row, 4)
-                excelView.setIndexWidget(ind, combo)
+                numoreHint.setBackground(QBrush(QColor(200,100,100,100)))
+                self.tableModel.setItem(row, 4, numoreHint)
             else:
-                self.tableModel.setItem(row, 4, QStandardItem(str(listCorsi[row].numore)))
+                self.tableModel.setItem(row, 4, numore)
 
-            self.tableModel.setItem(row, 5, QStandardItem(str(listCorsi[row].lab)))
-            self.tableModel.setItem(row, 6, QStandardItem(str(listCorsi[row].numslot)))
-            self.tableModel.setItem(row, 7, QStandardItem(str(listCorsi[row].slotdur)))
-            self.tableModel.setItem(row, 8, QStandardItem(str(listCorsi[row].type)))
-            self.tableModel.setItem(row, 9, QStandardItem(str(listCorsi[row].link)))
+            self.tableModel.setItem(row, 5, lab)
+            if(listCorsi[row].type == None):
+                typeHint.setBackground(QBrush(QColor(100,100,200,100)))
+                self.tableModel.setItem(row, 5, typeHint)
 
-        for row in range(0, len(listNewCorsi)):
-            self.tableModel.insertRow(row + len(listCorsi))
-            self.tableModel.setItem(row + len(listCorsi), 0, QStandardItem(str(listNewCorsi[row].nomecorso)))
+            self.tableModel.setItem(row, 6, type)
 
-            if (str(listNewCorsi[row].docente)) == str(None) or str(listNewCorsi[row].docente) == "":
-                c = QComboBox()
-                c.setEditable(True)
-                # c.setBackgroundRole(QColor("red"))
-                c.addItem(str(listNewCorsi[row].docenteHint).lower())
-                i = excelView.model().index(row + len(listCorsi), 1)
-                excelView.setIndexWidget(i, c)
-            else:
-                self.tableModel.setItem(row + len(listCorsi), 1, QStandardItem(str(listNewCorsi[row].docente)))
 
-            self.tableModel.setItem(row + len(listCorsi), 2, QStandardItem(str(listNewCorsi[row].numstudenti)))
-            self.tableModel.setItem(row + len(listCorsi), 3, QStandardItem(str(listNewCorsi[row].seguitoda)))
-
-            if (listNewCorsi[row].numore == None):
-                combo = QComboBox()
-                combo.setEditable(True)
-                combo.addItem("Inserisci..")
-                combo.addItem(str(listNewCorsi[row].numOreHint))
-                ind = excelView.model().index(row + len(listCorsi), 4)
-                excelView.setIndexWidget(ind, combo)
-            else:
-                self.tableModel.setItem(row + len(listCorsi), 4, QStandardItem(str(listNewCorsi[row].numore)))
-
-            self.tableModel.setItem(row + len(listCorsi), 5, QStandardItem(str(listNewCorsi[row].lab)))
-            self.tableModel.setItem(row + len(listCorsi), 6, QStandardItem(str(listNewCorsi[row].numslot)))
-            self.tableModel.setItem(row + len(listCorsi), 7, QStandardItem(str(listNewCorsi[row].slotdur)))
-            self.tableModel.setItem(row + len(listCorsi), 8, QStandardItem(str(listNewCorsi[row].type)))
-            self.tableModel.setItem(row + len(listCorsi), 9, QStandardItem(str(listNewCorsi[row].link)))
 
         excelView.resizeColumnsToContents()
+
