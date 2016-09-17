@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtWidgets import QFileDialog
 from Helpers import Readers, Model
-from GUI import Resolution, Colors
+from GUI import Resolution, ManageUI
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow, x, y):
@@ -10,7 +10,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, x-140, 81))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, x-60, 81))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -51,6 +51,7 @@ class Ui_MainWindow(object):
 
         self.loadExcel = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.loadExcel.setObjectName("loadExcel")
+        self.loadExcel.setDisabled(True)
         self.gridLayout.addWidget(self.loadExcel, 3, 1, 1, 1)
         self.loadExcel.clicked.connect(self.pickfile)
 
@@ -96,6 +97,7 @@ class Ui_MainWindow(object):
         self.actionApri_Prolog.setObjectName("actionApri_Prolog")
         self.actionApri_Excel = QtWidgets.QAction(MainWindow)
         self.actionApri_Excel.setObjectName("actionApri_Excel")
+        self.actionApri_Excel.setDisabled(True)
         self.actionSalva = QtWidgets.QAction(MainWindow)
         self.actionSalva.setObjectName("actionSalva")
         self.actionEsci = QtWidgets.QAction(MainWindow)
@@ -118,6 +120,13 @@ class Ui_MainWindow(object):
         self.menuInfo.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuInfo.menuAction())
+        self.prologView.setAlternatingRowColors(True)
+        self.excelView.setAlternatingRowColors(True)
+
+        self.excelView.hide()
+        self.prologView.hide()
+        self.label_7.hide()
+        self.label_8.hide()
 
         self.retranslateUi(MainWindow)
 
@@ -154,14 +163,18 @@ class Ui_MainWindow(object):
             Readers.loadExcel(filename)
             self.excelLoaded.setText("Fatto!")
             self.excelLoaded.setText("File Excel selezionato: " + filename)
-            Model.CreateModel().createExcelModel(self.excelView)
-            #Colors.Highlight().highlightCells(self.prologView, self.excelView)
+            self.excelModel = Model.CreateModel().createExcelModel(self.excelView)
+            ManageUI.Manage().setRows(self.excelView, self.prologView, self.prologModel, self.excelModel)
+            self.excelView.show()
+            self.label_8.show()
         if str(filename).endswith(".pl"):
             Readers.loadProlog(filename)
             self.prologLoaded.setText("Fatto!")
             self.prologLoaded.setText("File Prolog selezionato: " + filename)
-            Model.CreateModel().createPrologModel(self.prologView)
-
+            self.prologModel = Model.CreateModel().createPrologModel(self.prologView)
+            self.label_7.show()
+            self.prologView.show()
+            self.loadExcel.setEnabled(True)
 
 if __name__ == "__main__":
     import sys

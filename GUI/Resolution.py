@@ -12,15 +12,15 @@ class ResolutionManager():
             y = 960
 
         elif width == 1366 and height == 768:  # 1366x768
-            x = 1800
-            y = 900
+            x = 1200
+            y = 700
 
         elif width == 2560 and height == 1600:  # 2560x1600
             x = 1800
             y = 900
 
         elif width == 1680 and height == 1050:  # 1680x1050
-            x = 1800
+            x = 1500
             y = 900
 
         elif width == 1440 and height == 900:  # 1440x900
@@ -34,5 +34,9 @@ class ResolutionManager():
         elif width == 1280 and height == 800:  # 1280x800
             x = 1800
             y = 900
+
+        elif width == 1280 and height == 720:  #1280x720
+            x = 1200
+            y = 700
 
         return x, y
