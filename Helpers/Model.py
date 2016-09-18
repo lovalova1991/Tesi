@@ -59,11 +59,11 @@ class CreateModel:
             self.prologModel.insertRow(row)
 
             # button per spostamento
-            button = QPushButton()
-            button.setText("Aggiungi")
+            self.button = QPushButton()
+            self.button.setText("Elimina")
             x = prologView.model().index(row, 0)
-            prologView.setIndexWidget(x, button)
-            # b.connect()
+            prologView.setIndexWidget(x, self.button)
+            self.button.clicked.connect(self.buttonHandler)
 
             #imposto il background dei laboratori
             if listProlog[row].fullname == "[]" or "lab" in str(listProlog[row].nomecorso):
@@ -152,11 +152,12 @@ class CreateModel:
 
 
             #button per spostamento
-            b = QPushButton()
-            b.setText("Aggiungi")
+            self.b = QPushButton()
+            self.b.setText("Aggiungi")
             x = excelView.model().index(row, 0)
-            excelView.setIndexWidget(x, b)
-            #b.connect()
+            self.b.clicked.connect(self.buttonHandler)
+            excelView.setIndexWidget(x, self.b)
+
             self.tableModel.setItem(row, 1, nomecorso)
 
             if (str(listCorsi[row].docente)) == str(None) or str(listCorsi[row].docente) == "":
@@ -177,3 +178,6 @@ class CreateModel:
         excelView.resizeColumnsToContents()
         return self.tableModel
 
+    def buttonHandler(self):
+        button = self.sender()
+        print(button)

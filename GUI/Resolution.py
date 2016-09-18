@@ -20,7 +20,7 @@ class ResolutionManager():
             y = 900
 
         elif width == 1680 and height == 1050:  # 1680x1050
-            x = 1500
+            x = 1650
             y = 900
 
         elif width == 1440 and height == 900:  # 1440x900

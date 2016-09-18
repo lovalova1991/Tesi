@@ -1,3 +1,5 @@
+from Types.Result import ResultDef
+
 list = []
 toReturn = []
 class ExcelDef():
@@ -44,5 +46,12 @@ def checkCom():
                     list.remove(list[i+1])
        except IndexError:
            print("ops")
+
 def getExcelList():
     return list
+
+def getExcelToCompare():
+    toCompare = []
+    for element in list:
+        toCompare.append(ResultDef(str(element.nomeCorso).lower(),str(element.docente).lower(), "", "", "", "", ""))
+    return toCompare

@@ -10,7 +10,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, x-60, 81))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, x, 81))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
         self.loadProlog = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.loadProlog.setObjectName("loadProlog")
         self.gridLayout.addWidget(self.loadProlog, 3, 0, 1, 1)
-        self.loadProlog.clicked.connect(self.pickfile)
+        self.loadProlog.clicked.connect(self.pickprolog)
         self.label_3 = QtWidgets.QLabel(self.gridLayoutWidget)
         self.label_3.setObjectName("label_3")
         self.gridLayout.addWidget(self.label_3, 0, 2, 1, 1, QtCore.Qt.AlignHCenter)
@@ -53,10 +53,10 @@ class Ui_MainWindow(object):
         self.loadExcel.setObjectName("loadExcel")
         self.loadExcel.setDisabled(True)
         self.gridLayout.addWidget(self.loadExcel, 3, 1, 1, 1)
-        self.loadExcel.clicked.connect(self.pickfile)
+        self.loadExcel.clicked.connect(self.pickexcel)
 
         self.gridLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(9, 109, x-140, y-100))
+        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(9, 109, x, y-100))
         self.gridLayoutWidget_2.setObjectName("gridLayoutWidget_2")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget_2)
         self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
@@ -77,7 +77,7 @@ class Ui_MainWindow(object):
         self.label_8.setObjectName("label_8")
         self.gridLayout_2.addWidget(self.label_8, 0, 1, 1, 1, QtCore.Qt.AlignHCenter)
         self.line = QtWidgets.QFrame(self.centralwidget)
-        self.line.setGeometry(QtCore.QRect(10, 90, x-140, 20))
+        self.line.setGeometry(QtCore.QRect(10, 90, x, 20))
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
@@ -129,7 +129,6 @@ class Ui_MainWindow(object):
         self.label_8.hide()
 
         self.retranslateUi(MainWindow)
-
         self.prologView.verticalScrollBar().valueChanged.connect(self.onValueChanged)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -157,9 +156,9 @@ class Ui_MainWindow(object):
     def onValueChanged(self):
         self.excelView.scrollTo(self.prologView.currentIndex())
 
-    def pickfile(self):
-        filename, _ = QFileDialog.getOpenFileName()
-        if str(filename).endswith(".xlsx"):
+    def pickexcel(self):
+        filename, _ = QFileDialog.getOpenFileName(filter="Excel files (*.xlsx)")
+        if str(filename).endswith("xlsx"):
             Readers.loadExcel(filename, self.prologFileName)
             self.excelLoaded.setText("Fatto!")
             self.excelLoaded.setText("File Excel selezionato: " + filename)
@@ -167,6 +166,8 @@ class Ui_MainWindow(object):
             ManageUI.Manage().setRows(self.excelView, self.prologView, self.prologModel, self.excelModel)
             self.excelView.show()
             self.label_8.show()
+    def pickprolog(self):
+        filename, _ = QFileDialog.getOpenFileName(filter="Prolog files (*.pl)")
         if str(filename).endswith(".pl"):
             self.prologFileName = Readers.loadProlog(filename)
             self.prologLoaded.setText("Fatto!")

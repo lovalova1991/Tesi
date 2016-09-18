@@ -1,4 +1,6 @@
 from Types import Excel, Prolog
+from Types.Excel import ExcelDef
+from Types.Prolog import PrologDef
 from Types.Result import ResultDef
 
 newCorsi = []
@@ -17,10 +19,11 @@ def start():
     excelist = Excel.getExcelList()
     prologlist = Prolog.getPrologList()
 
-    for prologelement in prologlist:            #per ogni elemento nella lista del file prolog
-
-        for excelelement in excelist:           #per ogni elemento nella lista del file excel
-
+    for excelelement in excelist:            #per ogni elemento nella lista del file excel
+        lastelement = PrologDef("","","","","","","","","","","","")
+        for prologelement in prologlist:           #per ogni elemento nella lista del file excprologel
+                if str(prologelement.fullname).lower() == str(lastelement.fullname).lower():
+                    break
                 if str(prologelement.fullname).lower() == (str(excelelement.nomeCorso)).lower():
 
                     #Controllo che dal file excel confronto solo i corsi di informatica ed elettronica
@@ -46,12 +49,12 @@ def start():
                             numOreHint = excelelement.ore / 12
                             numOre = None
 
-
+                        lastelement = prologelement
                         result.append(ResultDef(excelelement.nomeCorso, docente, docenteHint, listCorsi, excelelement.anno, numOre, numOreHint))
 
     for excelelement in excelist:
         if(str(excelelement.nomeCorso).lower() not in listnames):
-            newCorsi.append(ResultDef(excelelement.nomeCorso, "", excelelement.docente, listCorsi, excelelement.anno, "", str(excelelement.ore / 12)))
+            newCorsi.append(ResultDef(excelelement.nomeCorso, "", excelelement.docente, listCorsi, excelelement.anno, "", ""))
 
     print("Compare Done")
     return result
