@@ -65,6 +65,20 @@ class CreateModel:
             prologView.setIndexWidget(x, button)
             # b.connect()
 
+            #imposto il background dei laboratori
+            if listProlog[row].fullname == "[]" or "lab" in str(listProlog[row].nomecorso):
+                nomecorso.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                shortName.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                docente.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                numstudenti.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                seguitoda.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                numore.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                lab.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                numslot.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                slotdur.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                type.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                link.setBackground(QBrush(QColor(100, 200, 100, 100)))
+
             self.prologModel.setItem(row, 1, nomecorso)
             self.prologModel.setItem(row, 2, shortName)
             self.prologModel.setItem(row, 3, docente)
@@ -134,6 +148,8 @@ class CreateModel:
                 anno.setBackground(QBrush(QColor(100, 200, 100, 100)))
                 docenteHint.setBackground(QBrush(QColor(100, 200, 100, 100)))
                 numoreHint.setBackground(QBrush(QColor(100, 200, 100, 100)))
+
+
 
             #button per spostamento
             b = QPushButton()

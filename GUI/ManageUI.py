@@ -43,7 +43,7 @@ class Manage():
                 pass
             else:
                 prologModel.insertRow(row)
-                for column in range(prologModel.columnCount()):
+                for column in range(prologModel.columnCount()):         #inserisco le righe vuote per creare una maggiore corrispondenza
                     toAdd = QStandardItem(str(""))
                     toAdd.setBackground(QBrush(QColor(100,100,100,200)))
                     prologModel.setItem(row, column, toAdd)

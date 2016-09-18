@@ -160,7 +160,7 @@ class Ui_MainWindow(object):
     def pickfile(self):
         filename, _ = QFileDialog.getOpenFileName()
         if str(filename).endswith(".xlsx"):
-            Readers.loadExcel(filename)
+            Readers.loadExcel(filename, self.prologFileName)
             self.excelLoaded.setText("Fatto!")
             self.excelLoaded.setText("File Excel selezionato: " + filename)
             self.excelModel = Model.CreateModel().createExcelModel(self.excelView)
@@ -168,7 +168,7 @@ class Ui_MainWindow(object):
             self.excelView.show()
             self.label_8.show()
         if str(filename).endswith(".pl"):
-            Readers.loadProlog(filename)
+            self.prologFileName = Readers.loadProlog(filename)
             self.prologLoaded.setText("Fatto!")
             self.prologLoaded.setText("File Prolog selezionato: " + filename)
             self.prologModel = Model.CreateModel().createPrologModel(self.prologView)

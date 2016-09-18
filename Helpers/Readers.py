@@ -13,12 +13,18 @@ def loadProlog(filename):
             temp1 = temp0.replace(").\n", '')
             Prolog.addToList(temp1)
     print("Prolog Loaded")
+    return filename
 
-def loadExcel(filename):
+def loadExcel(filename, prologFileName):
     if filename.find(".xlsx") == -1:
         #messagebox.showerror("Error", "Il file specificato non è un file excel.\nRiprova con un altro file.")
         return
     excel = load_workbook(filename, data_only=True)
+    semester = None
     ws = excel['Corsi']
-    Excel.addToList(ws)
+    if str(prologFileName).endswith("1.pl"):
+        semester = "1S"
+    elif str(prologFileName).endswith("3.pl"):
+        semester = "2S"
+    Excel.addToList(ws, semester)
     print("Excel Loaded")
