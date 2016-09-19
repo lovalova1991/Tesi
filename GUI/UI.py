@@ -1,4 +1,5 @@
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import QPoint
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QAction
 from PyQt5.QtWidgets import QFileDialog
@@ -145,6 +146,7 @@ class Ui_MainWindow(object):
         self.label_7.hide()
         self.label_8.hide()
 
+
         prologheaders = self.prologView.verticalHeader()
         prologheaders.setContextMenuPolicy(Qt.CustomContextMenu)
         prologheaders.customContextMenuRequested.connect(self.prologClicked)
@@ -154,11 +156,14 @@ class Ui_MainWindow(object):
         excelheaders.customContextMenuRequested.connect(self.excelClicked)
 
         self.retranslateUi(MainWindow)
+
         self.prologView.verticalScrollBar().valueChanged.connect(self.onValueChanged)
+
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def click(self):
         print("click")
+
     def prologClicked(self):
         index = self.prologView.selectedIndexes()[0]
         id_us = self.prologView.model().data(index)
@@ -171,6 +176,7 @@ class Ui_MainWindow(object):
         ret = msg.exec_()
         if ret == QMessageBox.Ok:
             self.prologModel.removeRow(index.row())
+            self.prologModel.insertRow(index.row())
         elif ret == QMessageBox.Cancel:
             msg.close()
 
@@ -212,7 +218,7 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(_translate("MainWindow", "About.."))
 
     def onValueChanged(self):
-        self.excelView.scrollTo(self.prologView.currentIndex())
+        self.excelView.verticalScrollMode()
 
     def pickexcel(self):
         filename, _ = QFileDialog.getOpenFileName(filter="Excel files (*.xlsx)")

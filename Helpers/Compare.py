@@ -19,7 +19,9 @@ def start():
     prologlist = Prolog.getPrologList()
 
     for excelelement in excelist:            #per ogni elemento nella lista del file excel
+
         lastelement = PrologDef("","","","","","","","","","","","")
+
         for prologelement in prologlist:           #per ogni elemento nella lista del file excprologel
                 if str(prologelement.fullname).lower() == str(lastelement.fullname).lower():
                     break
@@ -32,10 +34,16 @@ def start():
                         #qui devo controllare con triennale o magistrale e anno
                         listCorsi = str(excelelement.cdl).split(",")
 
+                        #qui devo aggiungere uno spazio tra numero e parola
+
                         #trova le differenze docente
                         if str(prologelement.docente).lower() != str(excelelement.docente).lower():
-                            docenteHint = "prova"
-                            docente = None
+                            if str(excelelement.docente) == "":
+                                docenteHint = "tace"
+                                docente = None
+                            else:
+                                docenteHint = excelelement.docente
+                                docente = None
                         else:
                             docente = excelelement.docente
 

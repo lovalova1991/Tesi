@@ -2,8 +2,8 @@ from PyQt5.QtGui import QBrush
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QStandardItem
 from PyQt5.QtGui import QStandardItemModel
+from PyQt5.QtWidgets import QComboBox
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QPushButton
 
 from Types import Prolog
 
@@ -23,7 +23,7 @@ class CreateModel:
         self.prologModel.setHorizontalHeaderItem(1, QStandardItem("Nome Schematico"))
         self.prologModel.setHorizontalHeaderItem(2, QStandardItem("Docente"))
         self.prologModel.setHorizontalHeaderItem(3, QStandardItem("Numero Studenti"))
-        self.prologModel.setHorizontalHeaderItem(4, QStandardItem("Seguito Da"))
+        self.prologModel.setHorizontalHeaderItem(4, QStandardItem("Corso / Anno"))
         self.prologModel.setHorizontalHeaderItem(5, QStandardItem("Numero Ore"))
         self.prologModel.setHorizontalHeaderItem(6, QStandardItem("Laboratorio"))
         self.prologModel.setHorizontalHeaderItem(7, QStandardItem("Numero Slot"))
@@ -58,23 +58,31 @@ class CreateModel:
 
             #imposto il background dei laboratori
             if listProlog[row].fullname == "[]" or "_lab" in str(listProlog[row].nomecorso) or "lab_" in str(listProlog[row].nomecorso):
-                nomecorso.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                shortName.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                docente.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                numstudenti.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                seguitoda.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                numore.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                lab.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                numslot.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                slotdur.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                type.setBackground(QBrush(QColor(200, 200, 100, 100)))
-                link.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                nomecorso.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                shortName.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                docente.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                numstudenti.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                seguitoda.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                numore.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                lab.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                numslot.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                slotdur.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                type.setBackground(QBrush(QColor(65, 205, 255, 200)))
+                link.setBackground(QBrush(QColor(65, 205, 255, 200)))
 
             self.prologModel.setItem(row, 0, nomecorso)
             self.prologModel.setItem(row, 1, shortName)
             self.prologModel.setItem(row, 2, docente)
             self.prologModel.setItem(row, 3, numstudenti)
-            self.prologModel.setItem(row, 4, seguitoda)
+
+            #combobox seguito da
+            combobox = QComboBox()
+            combobox.addItems(listCorsi)
+            combobox.setEditable(True)
+            i = prologView.model().index(row, 4)
+            prologView.setIndexWidget(i, combobox)
+
+            #self.prologModel.setItem(row, 4, seguitoda)
             self.prologModel.setItem(row, 5, numore)
             self.prologModel.setItem(row, 6, lab)
             self.prologModel.setItem(row, 7, numslot)
@@ -129,19 +137,19 @@ class CreateModel:
 
             self.tableModel.insertRow(row)
 
-            #se sono corsi nuovi li evidenzio
+            #se sono corsi nuovi li evidenzio in verde
             if listCorsi[row].docente == "" and listCorsi[row].numore == "":
-                nomecorso.setBackground(QBrush(QColor(100,200,100,100)))
-                docente.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                seguitoda.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                numore.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                anno.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                docenteHint.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                numoreHint.setBackground(QBrush(QColor(100, 200, 100, 100)))
+                nomecorso.setBackground(QBrush(QColor(0,255,85,200)))
+                docente.setBackground(QBrush(QColor(0, 255, 85, 200)))
+                seguitoda.setBackground(QBrush(QColor(0, 255, 85, 200)))
+                numore.setBackground(QBrush(QColor(0, 255, 85, 200)))
+                anno.setBackground(QBrush(QColor(0, 255, 85, 200)))
+                docenteHint.setBackground(QBrush(QColor(0, 255, 85, 200)))
+                numoreHint.setBackground(QBrush(QColor(0, 255, 85, 200)))
 
             self.tableModel.setItem(row, 0, nomecorso)
             if (str(listCorsi[row].docente)) == str(None) or str(listCorsi[row].docente) == "":
-                docenteHint.setBackground(QBrush(QColor(100,100,100,200)))
+                docenteHint.setBackground(QBrush(QColor(255,0,0,100)))
                 self.tableModel.setItem(row, 1, docenteHint)
             else:
                 self.tableModel.setItem(row, 1, docente)
@@ -150,7 +158,7 @@ class CreateModel:
             self.tableModel.setItem(row, 3, anno)
 
             if (listCorsi[row].numore == ""):
-                numoreHint.setBackground(QBrush(QColor(200,100,100,100)))
+                numoreHint.setBackground(QBrush(QColor(255,0,0,100)))
                 self.tableModel.setItem(row, 4, numoreHint)
             else:
                 self.tableModel.setItem(row, 4, numore)

@@ -58,7 +58,7 @@ def addToList(corsoString):
     type = temp0[secondParenthesis + 1]
     mysql = temp0[secondParenthesis + 2]
     fullname = temp0[secondParenthesis + 3].replace('"', '')
-    link = temp0[secondParenthesis + 4].replace('"','')
+    link = temp0[secondParenthesis + 4].replace('"','').split(").", 1)[0]
 
 
     listProlog.append(PrologDef(nomecorso, docente, numstudenti, seguitoda, numore, lab, numslot, slotdur, type, mysql, fullname, link))

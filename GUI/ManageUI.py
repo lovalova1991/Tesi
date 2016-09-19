@@ -55,21 +55,21 @@ class Manage():
                     for column in range(prologModel.columnCount()):
                         if str(prologModel.data(prologModel.index(row, column))).lower() != str(excelModel.data(excelModel.index(row, column))).lower():
                             toAdd = QStandardItem(str(prologModel.data(prologModel.index(row, column))))
-                            toAdd.setBackground(QBrush(QColor(200, 100, 200, 100)))
+                            toAdd.setBackground(QBrush(QColor(255, 155, 55, 200)))
                             prologModel.setItem(row, column, toAdd)
 
 
             elif str(excelModel.data(excelModel.index(row, 1))).lower() != str(prologModel.data(prologModel.index(row, 2))).lower(): #confronto docente
                 toAdd = QStandardItem(str(prologModel.data(prologModel.index(row, 2))))
-                toAdd.setBackground(QBrush(QColor(200, 100, 200, 100)))
+                toAdd.setBackground(QBrush(QColor(255, 0, 0, 100)))
                 prologModel.setItem(row, 2, toAdd)
 
             elif str(excelModel.data(excelModel.index(row, 2))).lower() != str(prologModel.data(prologModel.index(row, 4))).lower(): #confronto seguitoda
                 toAdd = QStandardItem(str(prologModel.data(prologModel.index(row, 4))))
-                toAdd.setBackground(QBrush(QColor(200, 100, 200, 100)))
+                toAdd.setBackground(QBrush(QColor(255, 0, 0, 100)))
                 prologModel.setItem(row, 4, toAdd)
 
             elif str(excelModel.data(excelModel.index(row, 3))).lower() != str(prologModel.data(prologModel.index(row, 4))).lower(): #confronto ore
                 toAdd = QStandardItem(str(prologModel.data(prologModel.index(row, 5))))
-                toAdd.setBackground(QBrush(QColor(200, 100, 200, 100)))
+                toAdd.setBackground(QBrush(QColor(255, 0, 0, 100)))
                 prologModel.setItem(row, 5, toAdd)
