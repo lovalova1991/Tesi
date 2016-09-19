@@ -15,7 +15,6 @@ def start():
     listCorsi = None
     numOre = None
     numOreHint = None
-
     excelist = Excel.getExcelList()
     prologlist = Prolog.getPrologList()
 
@@ -25,8 +24,8 @@ def start():
                 if str(prologelement.fullname).lower() == str(lastelement.fullname).lower():
                     break
                 if str(prologelement.fullname).lower() == (str(excelelement.nomeCorso)).lower():
-
-                    #Controllo che dal file excel confronto solo i corsi di informatica ed elettronica
+                        lastelement = prologelement
+                        #Controllo che dal file excel confronto solo i corsi di informatica ed elettronica
                         #Nome del corso è la chiave primaria
                         listnames.append(str(excelelement.nomeCorso).lower())
 
@@ -35,7 +34,7 @@ def start():
 
                         #trova le differenze docente
                         if str(prologelement.docente).lower() != str(excelelement.docente).lower():
-                            docenteHint = prologelement.docente
+                            docenteHint = "prova"
                             docente = None
                         else:
                             docente = excelelement.docente
@@ -49,7 +48,6 @@ def start():
                             numOreHint = excelelement.ore / 12
                             numOre = None
 
-                        lastelement = prologelement
                         result.append(ResultDef(excelelement.nomeCorso, docente, docenteHint, listCorsi, excelelement.anno, numOre, numOreHint))
 
     for excelelement in excelist:
@@ -57,8 +55,8 @@ def start():
             newCorsi.append(ResultDef(excelelement.nomeCorso, "", excelelement.docente, listCorsi, excelelement.anno, "", ""))
 
     print("Compare Done")
+    result.sort(key=lambda x: x.nomecorso, reverse=False)
     return result
-
 
 def getNewCorsi():
     return newCorsi

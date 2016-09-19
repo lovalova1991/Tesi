@@ -1,5 +1,3 @@
-from PyQt5.uic.properties import QtCore
-
 
 class ResolutionManager():
     def getResolution(self, resolution):

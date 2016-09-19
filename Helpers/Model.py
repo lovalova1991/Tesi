@@ -19,20 +19,18 @@ class CreateModel:
                 listProlog.remove(element)
 
         self.prologModel = QStandardItemModel()
-        self.prologModel.setHorizontalHeaderItem(0, QStandardItem("Elimina"))
-        self.prologModel.setHorizontalHeaderItem(1, QStandardItem("Nome Corso"))
-        self.prologModel.setHorizontalHeaderItem(2, QStandardItem("Nome Schematico"))
-        self.prologModel.setHorizontalHeaderItem(3, QStandardItem("Docente"))
-        self.prologModel.setHorizontalHeaderItem(4, QStandardItem("Numero Studenti"))
-        self.prologModel.setHorizontalHeaderItem(5, QStandardItem("Seguito Da"))
-        self.prologModel.setHorizontalHeaderItem(6, QStandardItem("Numero Ore"))
-        self.prologModel.setHorizontalHeaderItem(7, QStandardItem("Laboratorio"))
-        self.prologModel.setHorizontalHeaderItem(8, QStandardItem("Numero Slot"))
-        self.prologModel.setHorizontalHeaderItem(9, QStandardItem("Durata Slot"))
-        self.prologModel.setHorizontalHeaderItem(10, QStandardItem("Tipo"))
-        self.prologModel.setHorizontalHeaderItem(11, QStandardItem("Link"))
-        self.prologModel.setHorizontalHeaderItem(12, QStandardItem("Commento"))
-
+        self.prologModel.setHorizontalHeaderItem(0, QStandardItem("Nome Corso"))
+        self.prologModel.setHorizontalHeaderItem(1, QStandardItem("Nome Schematico"))
+        self.prologModel.setHorizontalHeaderItem(2, QStandardItem("Docente"))
+        self.prologModel.setHorizontalHeaderItem(3, QStandardItem("Numero Studenti"))
+        self.prologModel.setHorizontalHeaderItem(4, QStandardItem("Seguito Da"))
+        self.prologModel.setHorizontalHeaderItem(5, QStandardItem("Numero Ore"))
+        self.prologModel.setHorizontalHeaderItem(6, QStandardItem("Laboratorio"))
+        self.prologModel.setHorizontalHeaderItem(7, QStandardItem("Numero Slot"))
+        self.prologModel.setHorizontalHeaderItem(8, QStandardItem("Durata Slot"))
+        self.prologModel.setHorizontalHeaderItem(9, QStandardItem("Tipo"))
+        self.prologModel.setHorizontalHeaderItem(10, QStandardItem("Link"))
+        self.prologModel.setHorizontalHeaderItem(11, QStandardItem("Commento"))
 
         for row in range(0, len(listProlog)):
 
@@ -58,39 +56,32 @@ class CreateModel:
 
             self.prologModel.insertRow(row)
 
-            # button per spostamento
-            self.button = QPushButton()
-            self.button.setText("Elimina")
-            x = prologView.model().index(row, 0)
-            prologView.setIndexWidget(x, self.button)
-            self.button.clicked.connect(self.buttonHandler)
-
             #imposto il background dei laboratori
-            if listProlog[row].fullname == "[]" or "lab" in str(listProlog[row].nomecorso):
-                nomecorso.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                shortName.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                docente.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                numstudenti.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                seguitoda.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                numore.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                lab.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                numslot.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                slotdur.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                type.setBackground(QBrush(QColor(100, 200, 100, 100)))
-                link.setBackground(QBrush(QColor(100, 200, 100, 100)))
+            if listProlog[row].fullname == "[]" or "_lab" in str(listProlog[row].nomecorso) or "lab_" in str(listProlog[row].nomecorso):
+                nomecorso.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                shortName.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                docente.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                numstudenti.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                seguitoda.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                numore.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                lab.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                numslot.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                slotdur.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                type.setBackground(QBrush(QColor(200, 200, 100, 100)))
+                link.setBackground(QBrush(QColor(200, 200, 100, 100)))
 
-            self.prologModel.setItem(row, 1, nomecorso)
-            self.prologModel.setItem(row, 2, shortName)
-            self.prologModel.setItem(row, 3, docente)
-            self.prologModel.setItem(row, 4, numstudenti)
-            self.prologModel.setItem(row, 5, seguitoda)
-            self.prologModel.setItem(row, 6, numore)
-            self.prologModel.setItem(row, 7, lab)
-            self.prologModel.setItem(row, 8, numslot)
-            self.prologModel.setItem(row, 9, slotdur)
-            self.prologModel.setItem(row, 10, type)
-            self.prologModel.setItem(row, 11, link)
-            self.prologModel.setItem(row, 12, QStandardItem("Commenta..."))
+            self.prologModel.setItem(row, 0, nomecorso)
+            self.prologModel.setItem(row, 1, shortName)
+            self.prologModel.setItem(row, 2, docente)
+            self.prologModel.setItem(row, 3, numstudenti)
+            self.prologModel.setItem(row, 4, seguitoda)
+            self.prologModel.setItem(row, 5, numore)
+            self.prologModel.setItem(row, 6, lab)
+            self.prologModel.setItem(row, 7, numslot)
+            self.prologModel.setItem(row, 8, slotdur)
+            self.prologModel.setItem(row, 9, type)
+            self.prologModel.setItem(row, 10, link)
+            self.prologModel.setItem(row, 11, QStandardItem("Commenta..."))
 
             prologView.resizeColumnsToContents()
 
@@ -116,12 +107,11 @@ class CreateModel:
             msg.exec_()
         try:
             self.tableModel = QStandardItemModel()
-            self.tableModel.setHorizontalHeaderItem(0, QStandardItem("Aggiungi a Prolog"))
-            self.tableModel.setHorizontalHeaderItem(1, QStandardItem("Nome Corso"))
-            self.tableModel.setHorizontalHeaderItem(2, QStandardItem("Docente"))
-            self.tableModel.setHorizontalHeaderItem(3, QStandardItem("Seguito Da"))
-            self.tableModel.setHorizontalHeaderItem(4, QStandardItem("Anno"))
-            self.tableModel.setHorizontalHeaderItem(5, QStandardItem("Numero Ore"))
+            self.tableModel.setHorizontalHeaderItem(0, QStandardItem("Nome Corso"))
+            self.tableModel.setHorizontalHeaderItem(1, QStandardItem("Docente"))
+            self.tableModel.setHorizontalHeaderItem(2, QStandardItem("Seguito Da"))
+            self.tableModel.setHorizontalHeaderItem(3, QStandardItem("Anno"))
+            self.tableModel.setHorizontalHeaderItem(4, QStandardItem("Numero Ore"))
         except AttributeError:
             print("uops")
 
@@ -149,35 +139,25 @@ class CreateModel:
                 docenteHint.setBackground(QBrush(QColor(100, 200, 100, 100)))
                 numoreHint.setBackground(QBrush(QColor(100, 200, 100, 100)))
 
-
-
-            #button per spostamento
-            self.b = QPushButton()
-            self.b.setText("Aggiungi")
-            x = excelView.model().index(row, 0)
-            self.b.clicked.connect(self.buttonHandler)
-            excelView.setIndexWidget(x, self.b)
-
-            self.tableModel.setItem(row, 1, nomecorso)
-
+            self.tableModel.setItem(row, 0, nomecorso)
             if (str(listCorsi[row].docente)) == str(None) or str(listCorsi[row].docente) == "":
                 docenteHint.setBackground(QBrush(QColor(100,100,100,200)))
-                self.tableModel.setItem(row, 2, docenteHint)
+                self.tableModel.setItem(row, 1, docenteHint)
             else:
-                self.tableModel.setItem(row, 2, docente)
+                self.tableModel.setItem(row, 1, docente)
 
-            self.tableModel.setItem(row, 3, seguitoda)
-            self.tableModel.setItem(row, 4, anno)
+            self.tableModel.setItem(row, 2, seguitoda)
+            self.tableModel.setItem(row, 3, anno)
 
             if (listCorsi[row].numore == ""):
                 numoreHint.setBackground(QBrush(QColor(200,100,100,100)))
-                self.tableModel.setItem(row, 5, numoreHint)
+                self.tableModel.setItem(row, 4, numoreHint)
             else:
-                self.tableModel.setItem(row, 5, numore)
+                self.tableModel.setItem(row, 4, numore)
 
         excelView.resizeColumnsToContents()
         return self.tableModel
 
+
     def buttonHandler(self):
-        button = self.sender()
-        print(button)
+        print("mannaggia")

@@ -63,9 +63,10 @@ def addToList(corsoString):
 
     listProlog.append(PrologDef(nomecorso, docente, numstudenti, seguitoda, numore, lab, numslot, slotdur, type, mysql, fullname, link))
 
-    listForCompare.append(ResultDef(str(nomecorso).lower(), str(docente).lower(), "", "", "", "", ""))
+    listForCompare.append(ResultDef(str(nomecorso), str(docente).lower(), "", "", "", "", ""))
 
 def getPrologList():
+    listProlog.sort(key=lambda x: x.fullname, reverse=False)
     return listProlog
 
 def getListforCompare():

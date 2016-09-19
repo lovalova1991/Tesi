@@ -1,5 +1,10 @@
 from PyQt5 import QtCore, QtWidgets
+from PyQt5.QtCore import Qt
+from PyQt5.QtWidgets import QAction
 from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QMessageBox
+from PyQt5.QtWidgets import QTableView
+
 from Helpers import Readers, Model
 from GUI import Resolution, ManageUI
 
@@ -93,21 +98,32 @@ class Ui_MainWindow(object):
         self.statusbar = QtWidgets.QStatusBar(MainWindow)
         self.statusbar.setObjectName("statusbar")
         MainWindow.setStatusBar(self.statusbar)
+
         self.actionApri_Prolog = QtWidgets.QAction(MainWindow)
         self.actionApri_Prolog.setObjectName("actionApri_Prolog")
+        self.actionApri_Prolog.triggered.connect(self.pickprolog)
+
         self.actionApri_Excel = QtWidgets.QAction(MainWindow)
         self.actionApri_Excel.setObjectName("actionApri_Excel")
         self.actionApri_Excel.setDisabled(True)
+        self.actionApri_Excel.triggered.connect(self.pickexcel)
+
         self.actionSalva = QtWidgets.QAction(MainWindow)
         self.actionSalva.setObjectName("actionSalva")
+
         self.actionEsci = QtWidgets.QAction(MainWindow)
         self.actionEsci.setObjectName("actionEsci")
+        #self.actionEsci.triggered.connect(sys.ex)
+
         self.actionHelp = QtWidgets.QAction(MainWindow)
         self.actionHelp.setObjectName("actionHelp")
+
         self.actionGitHub_Repo = QtWidgets.QAction(MainWindow)
         self.actionGitHub_Repo.setObjectName("actionGitHub_Repo")
+
         self.actionAbout = QtWidgets.QAction(MainWindow)
         self.actionAbout.setObjectName("actionAbout")
+
         self.menuFile.addAction(self.actionApri_Prolog)
         self.menuFile.addAction(self.actionApri_Excel)
         self.menuFile.addSeparator()
@@ -120,6 +136,7 @@ class Ui_MainWindow(object):
         self.menuInfo.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuInfo.menuAction())
+
         self.prologView.setAlternatingRowColors(True)
         self.excelView.setAlternatingRowColors(True)
 
@@ -128,9 +145,50 @@ class Ui_MainWindow(object):
         self.label_7.hide()
         self.label_8.hide()
 
+        prologheaders = self.prologView.verticalHeader()
+        prologheaders.setContextMenuPolicy(Qt.CustomContextMenu)
+        prologheaders.customContextMenuRequested.connect(self.prologClicked)
+
+        excelheaders = self.excelView.verticalHeader()
+        excelheaders.setContextMenuPolicy(Qt.CustomContextMenu)
+        excelheaders.customContextMenuRequested.connect(self.excelClicked)
+
         self.retranslateUi(MainWindow)
         self.prologView.verticalScrollBar().valueChanged.connect(self.onValueChanged)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
+
+    def click(self):
+        print("click")
+    def prologClicked(self):
+        index = self.prologView.selectedIndexes()[0]
+        id_us = self.prologView.model().data(index)
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText("Attenzione")
+        msg.setInformativeText("Sei sicuro di voler eliminare il corso\n" + str(id_us) + "?")
+        msg.setWindowTitle("Elimina")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        ret = msg.exec_()
+        if ret == QMessageBox.Ok:
+            self.prologModel.removeRow(index.row())
+        elif ret == QMessageBox.Cancel:
+            msg.close()
+
+    def excelClicked(self):
+        index = self.excelView.selectedIndexes()[0]
+        id_us = self.excelView.model().data(index)
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Information)
+        msg.setText("Attenzione")
+        msg.setInformativeText("Vuoi aggiungere il corso " + str(id_us) + "?")
+        msg.setWindowTitle("Aggiungi a Prolog")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        ret = msg.exec_()
+        if ret == QMessageBox.Ok:
+            print("funzione da aggiungere")
+        elif ret == QMessageBox.Cancel:
+            msg.close()
+
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -166,6 +224,7 @@ class Ui_MainWindow(object):
             ManageUI.Manage().setRows(self.excelView, self.prologView, self.prologModel, self.excelModel)
             self.excelView.show()
             self.label_8.show()
+
     def pickprolog(self):
         filename, _ = QFileDialog.getOpenFileName(filter="Prolog files (*.pl)")
         if str(filename).endswith(".pl"):
@@ -176,6 +235,7 @@ class Ui_MainWindow(object):
             self.label_7.show()
             self.prologView.show()
             self.loadExcel.setEnabled(True)
+            self.actionApri_Excel.setEnabled(True)
 
 if __name__ == "__main__":
     import sys

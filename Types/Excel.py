@@ -18,7 +18,7 @@ def addToList(excelFile, semester):
     for row in excelFile.iter_rows():
         if (str(row[5].internal_value) == "EI" or str(row[5].internal_value) == "ETM" or str(row[5].internal_value) == "IAM") and (row[14].internal_value == str(semester) or row[14].internal_value == "Annuale"):
             list.append(ExcelDef(row[0].internal_value, #numero del corso presente nel file
-                             row[1].internal_value, #nome del corso
+                             str(row[1].internal_value), #nome del corso
                              row[5].internal_value, #cdl
                              row[7].internal_value, #ToM
                              row[9].internal_value, #com
@@ -27,7 +27,7 @@ def addToList(excelFile, semester):
                              row[16].internal_value, #ore
                              row[29].internal_value, #docente
                              ))
-    checkCom()
+    #checkCom()
 
 def checkCom():
    for i in range(0, len(list)):
@@ -35,23 +35,24 @@ def checkCom():
             if(str(list[i].com) == str(list[i+1].num)) or (str(list[i].com) == str(list[i-1].num)):
                 if (str(list[i].com) == str(list[i+1].num) and str(list[i].com) == str(list[i+2].num)):
                     list[i].cdl = str(list[i].cdl) + "," + str(list[i+1].cdl) + "," + str(list[i+2].cdl)
+                    print(list[i+1].nomeCorso)
+                    print(list[i+2].nomeCorso)
                     list.remove(list[i+1])
                     list.remove(list[i+2])
                 elif (str(list[i].com) == str(list[i-1].num) and str(list[i].com) == str(list[i-2].num)):
                     list[i].cdl = str(list[i].cdl) + "," + str(list[i - 1].cdl) + "," + str(list[i - 2].cdl)
+                    print(list[i - 1].nomeCorso)
+                    print(list[i - 2].nomeCorso)
                     list.remove(list[i - 1])
                     list.remove(list[i - 2])
                 else:
                     list[i].cdl = str(list[i].cdl) + "," + str(list[i+1].cdl)
+                    print(list[i-1].nomeCorso)
                     list.remove(list[i+1])
        except IndexError:
            print("ops")
 
 def getExcelList():
+    list.sort(key=lambda x: x.nomeCorso, reverse=False)
     return list
 
-def getExcelToCompare():
-    toCompare = []
-    for element in list:
-        toCompare.append(ResultDef(str(element.nomeCorso).lower(),str(element.docente).lower(), "", "", "", "", ""))
-    return toCompare
