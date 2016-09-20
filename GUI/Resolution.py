@@ -6,16 +6,16 @@ class ResolutionManager():
         y = None
 
         if width == 1920 and height == 1080:  # 1920x1080
-            x = 1250
-            y = 960
+            x = 1900
+            y = 1000
 
         elif width == 1366 and height == 768:  # 1366x768
             x = 1200
             y = 700
 
         elif width == 2560 and height == 1600:  # 2560x1600
-            x = 1800
-            y = 900
+            x = 2500
+            y = 1550
 
         elif width == 1680 and height == 1050:  # 1680x1050
             x = 1650

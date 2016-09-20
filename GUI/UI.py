@@ -3,6 +3,8 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QStandardItem
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QMessageBox
+from GUI.StartupDialog import Ui_Dialog
+import webbrowser
 
 from Helpers import Readers, Model, Save
 from GUI import Resolution, ManageUI
@@ -14,7 +16,7 @@ class Ui_MainWindow(object):
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, x, 81))
+        self.gridLayoutWidget.setGeometry(QtCore.QRect(10, 10, x, 90))
         self.gridLayoutWidget.setObjectName("gridLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
@@ -60,10 +62,10 @@ class Ui_MainWindow(object):
         self.loadExcel.clicked.connect(self.pickexcel)
 
         self.gridLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(9, 109, x, y-100))
+        self.gridLayoutWidget_2.setGeometry(QtCore.QRect(9, 110, x, y))
         self.gridLayoutWidget_2.setObjectName("gridLayoutWidget_2")
         self.gridLayout_2 = QtWidgets.QGridLayout(self.gridLayoutWidget_2)
-        self.gridLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.gridLayout_2.setContentsMargins(0, 10, 0, 150)
         self.gridLayout_2.setObjectName("gridLayout_2")
 
         self.prologView = QtWidgets.QTableView(self.gridLayoutWidget_2)
@@ -77,14 +79,17 @@ class Ui_MainWindow(object):
         self.label_7 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_7.setObjectName("label_7")
         self.gridLayout_2.addWidget(self.label_7, 0, 0, 1, 1, QtCore.Qt.AlignHCenter)
+
         self.label_8 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_8.setObjectName("label_8")
         self.gridLayout_2.addWidget(self.label_8, 0, 1, 1, 1, QtCore.Qt.AlignHCenter)
+
         self.line = QtWidgets.QFrame(self.centralwidget)
-        self.line.setGeometry(QtCore.QRect(10, 90, x, 20))
+        self.line.setGeometry(QtCore.QRect(10, 90, x, 50))
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
+
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, x-100, 21))
@@ -112,13 +117,14 @@ class Ui_MainWindow(object):
 
         self.actionEsci = QtWidgets.QAction(MainWindow)
         self.actionEsci.setObjectName("actionEsci")
-        #self.actionEsci.triggered.connect(sys.ex)
+        self.actionEsci.triggered.connect(self.quitbutton)
 
         self.actionHelp = QtWidgets.QAction(MainWindow)
         self.actionHelp.setObjectName("actionHelp")
-
+        self.actionHelp.triggered.connect(self.openHelpWindow)
         self.actionGitHub_Repo = QtWidgets.QAction(MainWindow)
         self.actionGitHub_Repo.setObjectName("actionGitHub_Repo")
+        self.actionGitHub_Repo.triggered.connect(self.openBrowser)
 
         self.actionAbout = QtWidgets.QAction(MainWindow)
         self.actionAbout.setObjectName("actionAbout")
@@ -160,40 +166,84 @@ class Ui_MainWindow(object):
 
         self.save.clicked.connect(self.saveClicked)
 
+    def openHelpWindow(self):
+        self._newWindow = Ui_Dialog()
+
+
+    def quitbutton(self):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Question)
+        msg.setText("Uscita")
+        msg.setInformativeText("Sei sicuro di voler uscire?")
+        msg.setWindowTitle("Uscita")
+        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+        ret = msg.exec_()
+        if ret == QMessageBox.Ok:
+            sys.exit()
+        elif ret == QMessageBox.Cancel:
+            msg.close()
+
+    def openBrowser(self):
+        new = 2
+        url = "https://github.com/lovalova1991/tesiv3"
+        webbrowser.open(url, new=new)
+
     def saveClicked(self):
         filename, _ = QFileDialog.getSaveFileName(filter="Excel files (*.pl)")
         Save.SaveFile().saveProlog(self.prologView, self.prologModel, filename)
 
     def prologClicked(self):
-        index = self.prologView.selectedIndexes()[0]
-        id_us = self.prologView.model().data(index)
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setText("Attenzione")
-        msg.setInformativeText("Sei sicuro di voler eliminare il corso\n" + str(id_us) + "?")
-        msg.setWindowTitle("Elimina")
-        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        ret = msg.exec_()
-        if ret == QMessageBox.Ok:
-            self.prologModel.removeRow(index.row())
-            self.prologModel.insertRow(index.row())
-        elif ret == QMessageBox.Cancel:
-            msg.close()
+        try:
+            index = self.prologView.selectedIndexes()[0]
+            id_us = self.prologView.model().data(index)
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText("Attenzione")
+            msg.setInformativeText("Sei sicuro di voler eliminare il corso\n" + str(id_us) + "?")
+            msg.setWindowTitle("Elimina")
+            msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            ret = msg.exec_()
+            if ret == QMessageBox.Ok:
+                self.prologModel.removeRow(index.row())
+                self.prologModel.insertRow(index.row())
+            elif ret == QMessageBox.Cancel:
+                msg.close()
+        except Exception:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Errore")
+            msg.setInformativeText("Per eliminare un corso, prima devi selezionarne uno!")
+            msg.setWindowTitle("Errore")
+            msg.setStandardButtons(QMessageBox.Ok)
+            ret = msg.exec_()
+            if ret == QMessageBox.Ok:
+                msg.close()
 
     def excelClicked(self):
-        index = self.excelView.selectedIndexes()[0]
-        id_us = self.excelView.model().data(index)
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Information)
-        msg.setText("Attenzione")
-        msg.setInformativeText("Vuoi aggiungere il corso " + str(id_us) + "?")
-        msg.setWindowTitle("Aggiungi a Prolog")
-        msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-        ret = msg.exec_()
-        if ret == QMessageBox.Ok:
-            self.prologModel.appendRow(QStandardItem("newcorso"))
-        elif ret == QMessageBox.Cancel:
-            msg.close()
+        try:
+            index = self.excelView.selectedIndexes()[0]
+            id_us = self.excelView.model().data(index)
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Warning)
+            msg.setText("Attenzione")
+            msg.setInformativeText("Vuoi aggiungere il corso " + str(id_us) + "?")
+            msg.setWindowTitle("Aggiungi a Prolog")
+            msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+            ret = msg.exec_()
+            if ret == QMessageBox.Ok:
+                self.prologModel.appendRow(QStandardItem("newcorso"))
+            elif ret == QMessageBox.Cancel:
+                msg.close()
+        except Exception:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Errore")
+            msg.setInformativeText("Per aggiungere un corso alla tabella Prolog, devi prima selezionare un corso!")
+            msg.setWindowTitle("Aggiungi a Prolog")
+            msg.setStandardButtons(QMessageBox.Ok)
+            ret = msg.exec_()
+            if ret == QMessageBox.Ok:
+                msg.close()
 
 
     def retranslateUi(self, MainWindow):
@@ -222,26 +272,24 @@ class Ui_MainWindow(object):
 
     def pickexcel(self):
         filename, _ = QFileDialog.getOpenFileName(filter="Excel files (*.xlsx)")
-        if str(filename).endswith("xlsx"):
-            Readers.loadExcel(filename, self.prologFileName)
-            self.excelLoaded.setText("Fatto!")
-            self.excelLoaded.setText("File Excel selezionato: " + filename)
-            self.excelModel = Model.CreateModel().createExcelModel(self.excelView)
-            ManageUI.Manage().setRows(self.excelView, self.prologView, self.prologModel, self.excelModel)
-            self.excelView.show()
-            self.label_8.show()
+        Readers.loadExcel(filename, self.prologFileName)
+        self.excelLoaded.setText("Fatto!")
+        self.excelLoaded.setText("File Excel selezionato: " + filename)
+        self.excelModel = Model.CreateModel().createExcelModel(self.excelView)
+        ManageUI.Manage().setRows(self.excelView, self.prologView, self.prologModel, self.excelModel)
+        self.excelView.show()
+        self.label_8.show()
 
     def pickprolog(self):
         filename, _ = QFileDialog.getOpenFileName(filter="Prolog files (*.pl)")
-        if str(filename).endswith(".pl"):
-            self.prologFileName = Readers.loadProlog(filename)
-            self.prologLoaded.setText("Fatto!")
-            self.prologLoaded.setText("File Prolog selezionato: " + filename)
-            self.prologModel = Model.CreateModel().createPrologModel(self.prologView)
-            self.label_7.show()
-            self.prologView.show()
-            self.loadExcel.setEnabled(True)
-            self.actionApri_Excel.setEnabled(True)
+        self.prologFileName = Readers.loadProlog(filename)
+        self.prologLoaded.setText("Fatto!")
+        self.prologLoaded.setText("File Prolog selezionato: " + filename)
+        self.prologModel = Model.CreateModel().createPrologModel(self.prologView)
+        self.label_7.show()
+        self.prologView.show()
+        self.loadExcel.setEnabled(True)
+        self.actionApri_Excel.setEnabled(True)
 
 if __name__ == "__main__":
     import sys
