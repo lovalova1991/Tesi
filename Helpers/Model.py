@@ -74,15 +74,15 @@ class CreateModel:
             self.prologModel.setItem(row, 1, shortName)
             self.prologModel.setItem(row, 2, docente)
             self.prologModel.setItem(row, 3, numstudenti)
-
-            #combobox seguito da
+            """
+            #combobox corsi / anno
             combobox = QComboBox()
             combobox.addItems(listCorsi)
             combobox.setEditable(True)
             i = prologView.model().index(row, 4)
             prologView.setIndexWidget(i, combobox)
-
-            #self.prologModel.setItem(row, 4, seguitoda)
+            """
+            self.prologModel.setItem(row, 4, seguitoda)
             self.prologModel.setItem(row, 5, numore)
             self.prologModel.setItem(row, 6, lab)
             self.prologModel.setItem(row, 7, numslot)

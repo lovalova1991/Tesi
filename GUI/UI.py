@@ -1,12 +1,10 @@
 from PyQt5 import QtCore, QtWidgets
-from PyQt5.QtCore import QPoint
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QAction
+from PyQt5.QtGui import QStandardItem
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QMessageBox
-from PyQt5.QtWidgets import QTableView
 
-from Helpers import Readers, Model
+from Helpers import Readers, Model, Save
 from GUI import Resolution, ManageUI
 
 class Ui_MainWindow(object):
@@ -146,7 +144,6 @@ class Ui_MainWindow(object):
         self.label_7.hide()
         self.label_8.hide()
 
-
         prologheaders = self.prologView.verticalHeader()
         prologheaders.setContextMenuPolicy(Qt.CustomContextMenu)
         prologheaders.customContextMenuRequested.connect(self.prologClicked)
@@ -161,8 +158,11 @@ class Ui_MainWindow(object):
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
-    def click(self):
-        print("click")
+        self.save.clicked.connect(self.saveClicked)
+
+    def saveClicked(self):
+        filename, _ = QFileDialog.getSaveFileName(filter="Excel files (*.pl)")
+        Save.SaveFile().saveProlog(self.prologView, self.prologModel, filename)
 
     def prologClicked(self):
         index = self.prologView.selectedIndexes()[0]
@@ -191,7 +191,7 @@ class Ui_MainWindow(object):
         msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
         ret = msg.exec_()
         if ret == QMessageBox.Ok:
-            print("funzione da aggiungere")
+            self.prologModel.appendRow(QStandardItem("newcorso"))
         elif ret == QMessageBox.Cancel:
             msg.close()
 
