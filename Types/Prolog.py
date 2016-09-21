@@ -1,7 +1,4 @@
-from Types.Result import ResultDef
-
 listProlog = []
-listForCompare = []
 
 class PrologDef():
     def __init__(self, nomecorso, docente, numstudenti, seguitoda, numore, lab, numslot, slotdur, type, mysql, fullname, link):
@@ -50,24 +47,39 @@ def addToList(corsoString):
     nomecorso = temp0[0]
     docente = temp0[1]
     numstudenti = temp0[2]
-    seguitoda = temp1
+    seguitoda = str(temp1).replace("1", ",1").replace("2", ",2").replace("3", ",3").replace("4", ",4").replace("5", ",5")
     numore = temp0[lastParenthesis + 1]
     lab = temp0[lastParenthesis + 2]
     numslot = temp0[lastParenthesis + 3]
-    slotdur = temp2
+    slotdur = str(temp2).replace("/", ",")
     type = temp0[secondParenthesis + 1]
     mysql = temp0[secondParenthesis + 2]
     fullname = temp0[secondParenthesis + 3].replace('"', '')
     link = temp0[secondParenthesis + 4].replace('"','').split(").", 1)[0]
 
+    if str(fullname).startswith("[pre"):
+        return
+    elif str(fullname).startswith("[]"):
+        nomecorso = temp0[0]
+        docente = temp0[1]
+        numstudenti = temp0[2]
+        seguitoda = temp0[3]
+        numore = temp0[4]
+        lab = temp0[5]
+        numslot = temp0[6]
+        slotdur = temp0[7]
+        type = temp0[8]
+        mysql = temp0[9]
+        fullname = temp0[10]
+        fullname = fullname[:-1]
+        fullname = fullname[-1:]
+        link = temp0[11].split(").", 1)[0]
+        link = link[:-1]
+        link = link[-1:]
 
     listProlog.append(PrologDef(nomecorso, docente, numstudenti, seguitoda, numore, lab, numslot, slotdur, type, mysql, fullname, link))
 
-    listForCompare.append(ResultDef(str(nomecorso), str(docente).lower(), "", "", "", "", ""))
 
 def getPrologList():
     listProlog.sort(key=lambda x: x.fullname, reverse=False)
     return listProlog
-
-def getListforCompare():
-    return listForCompare

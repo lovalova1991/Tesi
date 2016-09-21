@@ -1,18 +1,6 @@
-# -*- coding: utf-8 -*-
-
-# Form implementation generated from reading ui file 'startup.ui'
-#
-# Created by: PyQt5 UI code generator 5.7
-#
-# WARNING! All changes made in this file will be lost!
-
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 class Ui_Dialog(object):
-    def __init__(self):
-        super(Ui_Dialog, self).__init__()
-        self._new_window = None
-
     def setupUi(self, Dialog):
         Dialog.setObjectName("Benvenuto")
         Dialog.resize(1177, 744)
@@ -99,6 +87,8 @@ class Ui_Dialog(object):
 
 
 if __name__ == '__main__':
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
     app = QtWidgets.QMainWindow()
     app.show()
     app.exec_()

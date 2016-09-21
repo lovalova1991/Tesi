@@ -1,5 +1,4 @@
 from Types import Excel, Prolog
-from Types.Excel import ExcelDef
 from Types.Prolog import PrologDef
 from Types.Result import ResultDef
 
@@ -32,7 +31,7 @@ def start():
                         listnames.append(str(excelelement.nomeCorso).lower())
 
                         #qui devo controllare con triennale o magistrale e anno
-                        listCorsi = str(excelelement.cdl).split(",")
+                        listCorsi = str(excelelement.cdl)
 
                         #qui devo aggiungere uno spazio tra numero e parola
 

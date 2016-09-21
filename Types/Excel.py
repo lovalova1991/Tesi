@@ -1,7 +1,5 @@
-from Types.Result import ResultDef
 
 list = []
-toReturn = []
 class ExcelDef():
     def __init__(self, num, nomeCorso, cdl, ToM, com, anno, periodo, ore, docente):
         self.num = num #0
@@ -27,32 +25,24 @@ def addToList(excelFile, semester):
                              row[16].internal_value, #ore
                              row[29].internal_value, #docente
                              ))
-    #checkCom()
+    checkEqual()
 
-def checkCom():
-   for i in range(0, len(list)):
-       try:
-            if(str(list[i].com) == str(list[i+1].num)) or (str(list[i].com) == str(list[i-1].num)):
-                if (str(list[i].com) == str(list[i+1].num) and str(list[i].com) == str(list[i+2].num)):
-                    list[i].cdl = str(list[i].cdl) + "," + str(list[i+1].cdl) + "," + str(list[i+2].cdl)
-                    print(list[i+1].nomeCorso)
-                    print(list[i+2].nomeCorso)
-                    list.remove(list[i+1])
-                    list.remove(list[i+2])
-                elif (str(list[i].com) == str(list[i-1].num) and str(list[i].com) == str(list[i-2].num)):
-                    list[i].cdl = str(list[i].cdl) + "," + str(list[i - 1].cdl) + "," + str(list[i - 2].cdl)
-                    print(list[i - 1].nomeCorso)
-                    print(list[i - 2].nomeCorso)
-                    list.remove(list[i - 1])
-                    list.remove(list[i - 2])
-                else:
-                    list[i].cdl = str(list[i].cdl) + "," + str(list[i+1].cdl)
-                    print(list[i-1].nomeCorso)
-                    list.remove(list[i+1])
-       except IndexError:
-           print("ops")
+def checkEqual():
+    last = ExcelDef("","","","","","","","","")
+    for element in list:
+       if str(last.nomeCorso) == str(element.nomeCorso):
+           last.cdl = str(last.cdl) + ", " + str(element.cdl)
+           last.anno = str(last.anno) + ", " + str(element.anno)
+           last = element
+           list.remove(element)
+       else:
+            last = element
+
+
 
 def getExcelList():
+    for element in list:
+        print(element.nomeCorso + " " + element.cdl)
     list.sort(key=lambda x: x.nomeCorso, reverse=False)
     return list
 

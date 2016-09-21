@@ -1,7 +1,11 @@
 from PyQt5 import QtCore, QtWidgets
 from PyQt5.QtCore import Qt
+from PyQt5.QtGui import QBrush
+from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QStandardItem
+from PyQt5.QtWidgets import QAbstractItemView
 from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QMessageBox
 from GUI.StartupDialog import Ui_Dialog
 import webbrowser
@@ -75,6 +79,10 @@ class Ui_MainWindow(object):
         self.excelView = QtWidgets.QTableView(self.gridLayoutWidget_2)
         self.excelView.setObjectName("excelView")
         self.gridLayout_2.addWidget(self.excelView, 1, 1, 1, 1)
+
+        self.semestreLabel = QtWidgets.QLabel(self.gridLayoutWidget_2)
+        self.semestreLabel.setObjectName("semestreLabel")
+        self.gridLayout_2.addWidget(self.semestreLabel, 2, 0, 1, 0, QtCore.Qt.AlignHCenter)
 
         self.label_7 = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.label_7.setObjectName("label_7")
@@ -159,16 +167,17 @@ class Ui_MainWindow(object):
         excelheaders.customContextMenuRequested.connect(self.excelClicked)
 
         self.retranslateUi(MainWindow)
-
         self.prologView.verticalScrollBar().valueChanged.connect(self.onValueChanged)
 
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.save.clicked.connect(self.saveClicked)
 
+    def onValueChanged(self):
+        self.excelView.verticalScrollMode()
+
     def openHelpWindow(self):
         self._newWindow = Ui_Dialog()
-
 
     def quitbutton(self):
         msg = QMessageBox()
@@ -191,60 +200,84 @@ class Ui_MainWindow(object):
     def saveClicked(self):
         filename, _ = QFileDialog.getSaveFileName(filter="Excel files (*.pl)")
         Save.SaveFile().saveProlog(self.prologView, self.prologModel, filename)
+        self.savedDone.setText("Salvato in " + str(filename))
 
-    def prologClicked(self):
-        try:
+    def prologClicked(self, point):
+        menu = QMenu()
+        delete = menu.addAction("Elimina")
+        addRow = menu.addAction("Aggiungi riga qui..")
+        answ = menu.exec_(self.prologView.mapToGlobal(point))
+        if answ == delete:
+            try:
+                index = self.prologView.selectedIndexes()[0]
+                id_us = self.prologView.model().data(index)
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Warning)
+                msg.setText("Attenzione")
+                msg.setInformativeText("Sei sicuro di voler eliminare il corso\n" + str(id_us) + "?")
+                msg.setWindowTitle("Elimina")
+                msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+                ret = msg.exec_()
+                if ret == QMessageBox.Ok:
+                    self.prologModel.removeRow(index.row())
+                    self.prologModel.insertRow(index.row())
+                elif ret == QMessageBox.Cancel:
+                    msg.close()
+            except Exception:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setText("Errore")
+                msg.setInformativeText("Per eliminare un corso, prima devi selezionarne uno!")
+                msg.setWindowTitle("Errore")
+                msg.setStandardButtons(QMessageBox.Ok)
+                ret = msg.exec_()
+                if ret == QMessageBox.Ok:
+                    msg.close()
+        elif answ == addRow:
             index = self.prologView.selectedIndexes()[0]
-            id_us = self.prologView.model().data(index)
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Warning)
             msg.setText("Attenzione")
-            msg.setInformativeText("Sei sicuro di voler eliminare il corso\n" + str(id_us) + "?")
-            msg.setWindowTitle("Elimina")
+            msg.setInformativeText("Sei sicuro di voler aggiungere una riga qui?")
+            msg.setWindowTitle("Aggiungi riga")
             msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
             ret = msg.exec_()
             if ret == QMessageBox.Ok:
-                self.prologModel.removeRow(index.row())
                 self.prologModel.insertRow(index.row())
             elif ret == QMessageBox.Cancel:
                 msg.close()
-        except Exception:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Errore")
-            msg.setInformativeText("Per eliminare un corso, prima devi selezionarne uno!")
-            msg.setWindowTitle("Errore")
-            msg.setStandardButtons(QMessageBox.Ok)
-            ret = msg.exec_()
-            if ret == QMessageBox.Ok:
-                msg.close()
 
-    def excelClicked(self):
-        try:
-            index = self.excelView.selectedIndexes()[0]
-            id_us = self.excelView.model().data(index)
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Warning)
-            msg.setText("Attenzione")
-            msg.setInformativeText("Vuoi aggiungere il corso " + str(id_us) + "?")
-            msg.setWindowTitle("Aggiungi a Prolog")
-            msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
-            ret = msg.exec_()
-            if ret == QMessageBox.Ok:
-                self.prologModel.appendRow(QStandardItem("newcorso"))
-            elif ret == QMessageBox.Cancel:
-                msg.close()
-        except Exception:
-            msg = QMessageBox()
-            msg.setIcon(QMessageBox.Critical)
-            msg.setText("Errore")
-            msg.setInformativeText("Per aggiungere un corso alla tabella Prolog, devi prima selezionare un corso!")
-            msg.setWindowTitle("Aggiungi a Prolog")
-            msg.setStandardButtons(QMessageBox.Ok)
-            ret = msg.exec_()
-            if ret == QMessageBox.Ok:
-                msg.close()
-
+    def excelClicked(self, newpoint):
+        menu = QMenu()
+        add = menu.addAction("Aggiungi Corso..")
+        answ = menu.exec_(self.prologView.mapToGlobal(newpoint))
+        if answ == add:
+            try:
+                corsoindex = self.excelView.selectedIndexes()[0]
+                id_us = self.excelView.model().data(corsoindex)
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Warning)
+                msg.setText("Attenzione")
+                msg.setInformativeText("Vuoi aggiungere il corso " + str(id_us) + "?")
+                msg.setWindowTitle("Aggiungi a Prolog")
+                msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
+                ret = msg.exec_()
+                if ret == QMessageBox.Ok:
+                    nomeCorso = QStandardItem(str(self.excelModel.data(self.excelModel.index(corsoindex.row(), corsoindex.column()))))
+                    nomeCorso.setBackground(QBrush(QColor(0, 255, 85, 200)))
+                    self.prologModel.appendRow(nomeCorso)
+                elif ret == QMessageBox.Cancel:
+                    msg.close()
+            except Exception:
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setText("Errore")
+                msg.setInformativeText("Per aggiungere un corso alla tabella Prolog, devi prima selezionare un corso!")
+                msg.setWindowTitle("Aggiungi a Prolog")
+                msg.setStandardButtons(QMessageBox.Ok)
+                ret = msg.exec_()
+                if ret == QMessageBox.Ok:
+                    msg.close()
 
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -267,29 +300,46 @@ class Ui_MainWindow(object):
         self.actionGitHub_Repo.setText(_translate("MainWindow", "GitHub Repo"))
         self.actionAbout.setText(_translate("MainWindow", "About.."))
 
-    def onValueChanged(self):
-        self.excelView.verticalScrollMode()
-
     def pickexcel(self):
         filename, _ = QFileDialog.getOpenFileName(filter="Excel files (*.xlsx)")
-        Readers.loadExcel(filename, self.prologFileName)
-        self.excelLoaded.setText("Fatto!")
-        self.excelLoaded.setText("File Excel selezionato: " + filename)
-        self.excelModel = Model.CreateModel().createExcelModel(self.excelView)
-        ManageUI.Manage().setRows(self.excelView, self.prologView, self.prologModel, self.excelModel)
-        self.excelView.show()
-        self.label_8.show()
+        if filename != "":
+            Readers.loadExcel(filename, self.prologFileName)
+            self.excelLoaded.setText("File Excel selezionato: " + filename)
+            self.excelModel = Model.CreateModel().createExcelModel(self.excelView)
+            ManageUI.Manage().setRows(self.excelView, self.prologView, self.prologModel, self.excelModel)
+            self.excelView.show()
+            self.label_8.show()
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Errore")
+            msg.setInformativeText("Non hai selezionato nessun file!")
+            msg.setWindowTitle("File non selezionato")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
 
     def pickprolog(self):
         filename, _ = QFileDialog.getOpenFileName(filter="Prolog files (*.pl)")
-        self.prologFileName = Readers.loadProlog(filename)
-        self.prologLoaded.setText("Fatto!")
-        self.prologLoaded.setText("File Prolog selezionato: " + filename)
-        self.prologModel = Model.CreateModel().createPrologModel(self.prologView)
-        self.label_7.show()
-        self.prologView.show()
-        self.loadExcel.setEnabled(True)
-        self.actionApri_Excel.setEnabled(True)
+        if filename != "":
+            self.prologFileName = Readers.loadProlog(filename)
+            self.prologLoaded.setText("File Prolog selezionato: " + filename)
+            self.prologModel = Model.CreateModel().createPrologModel(self.prologView)
+            if str(filename).endswith("1.pl"):
+                self.semestreLabel.setText("1° Semestre")
+            elif str(filename).endswith("3.pl"):
+                self.semestreLabel.setText("2° Semestre")
+            self.label_7.show()
+            self.prologView.show()
+            self.loadExcel.setEnabled(True)
+            self.actionApri_Excel.setEnabled(True)
+        else:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Errore")
+            msg.setInformativeText("Non hai selezionato nessun file!")
+            msg.setWindowTitle("File non selezionato")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
 
 if __name__ == "__main__":
     import sys

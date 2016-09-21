@@ -2,7 +2,6 @@ from PyQt5.QtGui import QBrush
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QStandardItem
 from PyQt5.QtGui import QStandardItemModel
-from PyQt5.QtWidgets import QComboBox
 from PyQt5.QtWidgets import QMessageBox
 
 from Types import Prolog
@@ -33,13 +32,7 @@ class CreateModel:
         self.prologModel.setHorizontalHeaderItem(11, QStandardItem("Commento"))
 
         for row in range(0, len(listProlog)):
-
-            # lista degli studenti che seguono il corso... qui si può fare di meglio
-            tmp = str(listProlog[row].seguitoda).replace('[[', '')
-            tmp1 = str(tmp).replace(']]', '')
-            tmp2 = tmp1.split("][")
-            listCorsi = tmp2
-
+            listCorsi =  str(listProlog[row].seguitoda).replace("][", "],[")
             nomecorso = QStandardItem(str(listProlog[row].fullname))
             shortName = QStandardItem(str(listProlog[row].nomecorso))
             docente = QStandardItem(str(listProlog[row].docente))
@@ -74,14 +67,6 @@ class CreateModel:
             self.prologModel.setItem(row, 1, shortName)
             self.prologModel.setItem(row, 2, docente)
             self.prologModel.setItem(row, 3, numstudenti)
-            """
-            #combobox corsi / anno
-            combobox = QComboBox()
-            combobox.addItems(listCorsi)
-            combobox.setEditable(True)
-            i = prologView.model().index(row, 4)
-            prologView.setIndexWidget(i, combobox)
-            """
             self.prologModel.setItem(row, 4, seguitoda)
             self.prologModel.setItem(row, 5, numore)
             self.prologModel.setItem(row, 6, lab)
@@ -165,7 +150,3 @@ class CreateModel:
 
         excelView.resizeColumnsToContents()
         return self.tableModel
-
-
-    def buttonHandler(self):
-        print("mannaggia")

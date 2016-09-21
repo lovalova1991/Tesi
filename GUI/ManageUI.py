@@ -49,7 +49,7 @@ class Manage():
         for row in range(prologModel.rowCount()):
 
             if str(excelModel.data(excelModel.index(row, 0))).lower() == "none":
-                if "[]" in str(prologModel.data(prologModel.index(row, 0))).lower() or "_lab" in str(prologModel.data(prologModel.index(row, 1))).lower() or "lab_" in str(prologModel.data(prologModel.index(row, 2))).lower():
+                if "_lab" in str(prologModel.data(prologModel.index(row, 1))).lower() or "lab_" in str(prologModel.data(prologModel.index(row, 2))).lower():
                     pass
                 else:
                     for column in range(prologModel.columnCount()):
