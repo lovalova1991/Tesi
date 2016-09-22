@@ -7,6 +7,8 @@ from PyQt5.QtWidgets import QAbstractItemView
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QMessageBox
+
+from GUI.HelpDialog import HelpDialog
 from GUI.StartupDialog import Ui_Dialog
 import webbrowser
 
@@ -177,7 +179,8 @@ class Ui_MainWindow(object):
         self.excelView.verticalScrollMode()
 
     def openHelpWindow(self):
-        self._newWindow = Ui_Dialog()
+        self.helpDialog = HelpDialog()
+        self.helpDialog.show()
 
     def quitbutton(self):
         msg = QMessageBox()
