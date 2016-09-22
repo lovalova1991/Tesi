@@ -1,11 +1,9 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QMainWindow
 
-
-class HelpDialog(QMainWindow):
+class HelpDialog(object):
     def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1383, 972)
+        MainWindow.setObjectName("Help")
+        MainWindow.resize(600, 600)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.textBrowser = QtWidgets.QTextBrowser(self.centralwidget)

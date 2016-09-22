@@ -1,6 +1,6 @@
 
 class SaveFile():
-    def saveProlog(self, prologView, prologModel, filename):
+    def saveProlog(self, prologView, prologModel, filename, prologToSave):
         self.toSaveList = []
         for row in range(prologModel.rowCount()):
             try:
@@ -35,13 +35,25 @@ class SaveFile():
                             str(numslot).replace("(", "").replace(")", "").replace("'","").replace("/",",") + \
                             str(durataslot).replace("(", "").replace(")", "").replace("'","") + \
                             str(type).replace("(", "").replace(")", "").replace("'","") \
-                             + "_," + str(nomecorso).replace("(", "").replace(")", "") + \
-                             str(link).replace("(", "").replace(")", "").replace("'","") + ")  " + str(commento)
+                             + "_," + str(nomecorso).replace("(", "").replace(")", "") .replace("'",'"')+ \
+                             '"' + str(link).replace("(", "").replace(")", "").replace("'","") + ").  " + str(commento)
 
             self.toSaveList.append(stringToPrint)
 
+        file = open(prologToSave, 'r')
         out_file = open(filename, "w")
-        for element in self.toSaveList:
-            out_file.writelines(str(element) + "\n\n")
+        counter = 0
+        for line in file:
+            if counter == len(self.toSaveList):
+                break
+            if str(line).startswith("corso("):
+                line = "%" + str(line)
+                out_file.writelines(line + "\n")
+                out_file.writelines(self.toSaveList[counter])
+                counter = counter + 1
+            else:
+                out_file.writelines(line)
         out_file.close()
+
+
 

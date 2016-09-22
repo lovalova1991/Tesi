@@ -59,7 +59,7 @@ def start():
 
     for excelelement in excelist:
         if(str(excelelement.nomeCorso).lower() not in listnames):
-            newCorsi.append(ResultDef(excelelement.nomeCorso, "", excelelement.docente, listCorsi, excelelement.anno, "", ""))
+            newCorsi.append(ResultDef(excelelement.nomeCorso, "", excelelement.docente, excelelement.cdl, excelelement.anno, "", str(excelelement.ore / 12)))
 
     print("Compare Done")
     result.sort(key=lambda x: x.nomecorso, reverse=False)

@@ -3,13 +3,11 @@ from PyQt5.QtCore import Qt
 from PyQt5.QtGui import QBrush
 from PyQt5.QtGui import QColor
 from PyQt5.QtGui import QStandardItem
-from PyQt5.QtWidgets import QAbstractItemView
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QMessageBox
 
 from GUI.HelpDialog import HelpDialog
-from GUI.StartupDialog import Ui_Dialog
 import webbrowser
 
 from Helpers import Readers, Model, Save
@@ -176,11 +174,16 @@ class Ui_MainWindow(object):
         self.save.clicked.connect(self.saveClicked)
 
     def onValueChanged(self):
-        self.excelView.verticalScrollMode()
+        row = self.prologView.currentIndex().row()
+        if row > -1:
+            h = self.excelView.horizontalHeader()
+            for i in range(h.count()):
+                if not h.isSectionHidden(i) and h.sectionViewportPosition(i) >= 0:
+                    self.excelView.scrollTo(self.excelView.model().index(row, i))
+                    break
 
     def openHelpWindow(self):
-        self.helpDialog = HelpDialog()
-        self.helpDialog.show()
+        print("seconda finestra di help")
 
     def quitbutton(self):
         msg = QMessageBox()
@@ -202,7 +205,7 @@ class Ui_MainWindow(object):
 
     def saveClicked(self):
         filename, _ = QFileDialog.getSaveFileName(filter="Excel files (*.pl)")
-        Save.SaveFile().saveProlog(self.prologView, self.prologModel, filename)
+        Save.SaveFile().saveProlog(self.prologView, self.prologModel, filename, self.prologToSave)
         self.savedDone.setText("Salvato in " + str(filename))
 
     def prologClicked(self, point):
@@ -325,6 +328,7 @@ class Ui_MainWindow(object):
         filename, _ = QFileDialog.getOpenFileName(filter="Prolog files (*.pl)")
         if filename != "":
             self.prologFileName = Readers.loadProlog(filename)
+            self.prologToSave = filename
             self.prologLoaded.setText("File Prolog selezionato: " + filename)
             self.prologModel = Model.CreateModel().createPrologModel(self.prologView)
             if str(filename).endswith("1.pl"):
@@ -346,7 +350,7 @@ class Ui_MainWindow(object):
 
 if __name__ == "__main__":
     import sys
-    app = QtWidgets.QApplication(sys.argv)
+    app = QtWidgets.QApplication([])
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     resolution = app.desktop().screenGeometry()

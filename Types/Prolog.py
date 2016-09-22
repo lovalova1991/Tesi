@@ -60,26 +60,24 @@ def addToList(corsoString):
     if str(fullname).startswith("[pre"):
         return
     elif str(fullname).startswith("[]"):
-        nomecorso = temp0[0]
-        docente = temp0[1]
-        numstudenti = temp0[2]
-        seguitoda = temp0[3]
-        numore = temp0[4]
-        lab = temp0[5]
-        numslot = temp0[6]
-        slotdur = temp0[7]
-        type = temp0[8]
-        mysql = temp0[9]
-        fullname = temp0[10]
-        fullname = fullname[:-1]
-        fullname = fullname[-1:]
-        link = temp0[11].split(").", 1)[0]
-        link = link[:-1]
-        link = link[-1:]
+        listlab = str(corsoString).split(",")
+        nomecorso = listlab[0]
+        docente = listlab[1]
+        numstudenti = listlab[2]
+        seguitoda = listlab[3]
+        numore = listlab[4]
+        lab = listlab[5]
+        numslot = listlab[6]
+        type = listlab[8]
+        mysql = listlab[9]
+        fullname = listlab[10].replace('"',"")
+
+        link = listlab[11].split(").", 1)[0].replace('"',"")
+
 
     listProlog.append(PrologDef(nomecorso, docente, numstudenti, seguitoda, numore, lab, numslot, slotdur, type, mysql, fullname, link))
 
 
 def getPrologList():
-    listProlog.sort(key=lambda x: x.fullname, reverse=False)
+    listProlog.sort(key=lambda x: str(x.fullname).lower(), reverse=False)
     return listProlog
