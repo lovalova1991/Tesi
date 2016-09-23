@@ -6,8 +6,6 @@ from PyQt5.QtGui import QStandardItem
 from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QMessageBox
-
-from GUI.HelpDialog import HelpDialog
 import webbrowser
 
 from Helpers import Readers, Model, Save
@@ -272,6 +270,7 @@ class Ui_MainWindow(object):
                     nomeCorso = QStandardItem(str(self.excelModel.data(self.excelModel.index(corsoindex.row(), corsoindex.column()))))
                     nomeCorso.setBackground(QBrush(QColor(0, 255, 85, 200)))
                     self.prologModel.appendRow(nomeCorso)
+                    ManageUI.Manage().setRows(self.prologModel, self.excelModel)
                 elif ret == QMessageBox.Cancel:
                     msg.close()
             except Exception:
@@ -312,7 +311,7 @@ class Ui_MainWindow(object):
             Readers.loadExcel(filename, self.prologFileName)
             self.excelLoaded.setText("File Excel selezionato: " + filename)
             self.excelModel = Model.CreateModel().createExcelModel(self.excelView)
-            ManageUI.Manage().setRows(self.excelView, self.prologView, self.prologModel, self.excelModel)
+            ManageUI.Manage().setRows(self.prologModel, self.excelModel)
             self.excelView.show()
             self.label_8.show()
         else:
@@ -325,6 +324,8 @@ class Ui_MainWindow(object):
             msg.exec_()
 
     def pickprolog(self):
+        self.excelView.hide()
+        self.excelLoaded.hide()
         filename, _ = QFileDialog.getOpenFileName(filter="Prolog files (*.pl)")
         if filename != "":
             self.prologFileName = Readers.loadProlog(filename)

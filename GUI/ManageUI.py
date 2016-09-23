@@ -16,7 +16,7 @@ class Manage():
                 else:
                     excelModel.removeRow(element)
 
-    def setRows(self, excelView, prologView, prologModel, excelModel):
+    def setRows(self, prologModel, excelModel):
 
         self.getElementsToRemove(excelModel)
 
@@ -37,7 +37,8 @@ class Manage():
                 pass
             elif str(nomeProlog).lower() == str(nomeExcel).lower():
                 pass
-
+            elif str(nomeProlog) == "":
+                excelModel.insertRow(row)
             elif str(nomeProlog).lower() != str(nomeExcel).lower():
                 excelModel.removeRow(row)
 

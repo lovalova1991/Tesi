@@ -44,9 +44,9 @@ class SaveFile():
         out_file = open(filename, "w")
         counter = 0
         for line in file:
-            if counter == len(self.toSaveList):
-                break
             if str(line).startswith("corso("):
+                if counter == len(self.toSaveList):
+                    continue
                 line = "%" + str(line)
                 out_file.writelines(line + "\n")
                 out_file.writelines(self.toSaveList[counter])
