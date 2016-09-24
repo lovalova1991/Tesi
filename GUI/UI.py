@@ -333,9 +333,9 @@ class Ui_MainWindow(object):
             self.prologLoaded.setText("File Prolog selezionato: " + filename)
             self.prologModel = Model.CreateModel().createPrologModel(self.prologView)
             if str(filename).endswith("1.pl"):
-                self.semestreLabel.setText("1° Semestre")
+                self.semestreLabel.setText("1o Semestre")
             elif str(filename).endswith("3.pl"):
-                self.semestreLabel.setText("2° Semestre")
+                self.semestreLabel.setText("2o Semestre")
             self.label_7.show()
             self.prologView.show()
             self.loadExcel.setEnabled(True)

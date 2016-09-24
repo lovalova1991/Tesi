@@ -1,5 +1,5 @@
-
 list = []
+
 class ExcelDef():
     def __init__(self, num, nomeCorso, cdl, ToM, com, anno, periodo, ore, docente):
         self.num = num #0
