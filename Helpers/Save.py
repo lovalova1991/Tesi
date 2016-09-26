@@ -1,3 +1,4 @@
+import time
 from PyQt5.QtWidgets import QMessageBox
 
 
@@ -53,6 +54,7 @@ class SaveFile():
         out_file = open(filename, "w")
         counter = 0
         try:
+            out_file.writelines("%Creazione documento " + time.strftime("%d/%m/%Y"))
             for line in file:
                 if str(line).startswith("corso("):
                     if counter == len(self.toSaveList):
