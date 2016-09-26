@@ -12,12 +12,13 @@ class CreateModel:
 
     def createPrologModel(self, prologView):
         listProlog = Prolog.getPrologList()
-
         for element in listProlog:
             if str(element.fullname).startswith("[pre"):
                 listProlog.remove(element)
 
         self.prologModel = QStandardItemModel()
+
+
         self.prologModel.setHorizontalHeaderItem(0, QStandardItem("Nome Corso"))
         self.prologModel.setHorizontalHeaderItem(1, QStandardItem("Nome Schematico"))
         self.prologModel.setHorizontalHeaderItem(2, QStandardItem("Docente"))

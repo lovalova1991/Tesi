@@ -202,9 +202,18 @@ class Ui_MainWindow(object):
         webbrowser.open(url, new=new)
 
     def saveClicked(self):
-        filename, _ = QFileDialog.getSaveFileName(filter="Excel files (*.pl)")
-        Save.SaveFile().saveProlog(self.prologView, self.prologModel, filename, self.prologToSave)
-        self.savedDone.setText("Salvato in " + str(filename))
+        try:
+            filename, _ = QFileDialog.getSaveFileName(filter="Excel files (*.pl)")
+            Save.SaveFile().saveProlog(self.prologModel, filename, self.prologToSave)
+            self.savedDone.setText("Salvato in " + str(filename))
+        except Exception:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setText("Attenzione")
+            msg.setInformativeText("Nessun file selezionato!")
+            msg.setWindowTitle("Attenzione")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
 
     def prologClicked(self, point):
         menu = QMenu()
@@ -313,6 +322,7 @@ class Ui_MainWindow(object):
             self.excelModel = Model.CreateModel().createExcelModel(self.excelView)
             ManageUI.Manage().setRows(self.prologModel, self.excelModel)
             self.excelView.show()
+            self.excelLoaded.show()
             self.label_8.show()
         else:
             msg = QMessageBox()
@@ -334,7 +344,7 @@ class Ui_MainWindow(object):
             self.prologModel = Model.CreateModel().createPrologModel(self.prologView)
             if str(filename).endswith("1.pl"):
                 self.semestreLabel.setText("1o Semestre")
-            elif str(filename).endswith("3.pl"):
+            elif str(filename).endswith("3.pl") or str(filename).endswith("2.pl"):
                 self.semestreLabel.setText("2o Semestre")
             self.label_7.show()
             self.prologView.show()

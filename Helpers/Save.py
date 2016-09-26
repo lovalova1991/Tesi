@@ -1,6 +1,6 @@
 
 class SaveFile():
-    def saveProlog(self, prologView, prologModel, filename, prologToSave):
+    def saveProlog(self, prologModel, filename, prologToSave):
         self.toSaveList = []
         for row in range(prologModel.rowCount()):
             try:
