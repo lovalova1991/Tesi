@@ -7,7 +7,6 @@ from PyQt5.QtWidgets import QFileDialog
 from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QMessageBox
 import webbrowser
-
 from Helpers import Readers, Model, Save
 from GUI import Resolution, ManageUI
 
@@ -56,6 +55,7 @@ class Ui_MainWindow(object):
         self.save = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.save.setObjectName("save")
         self.gridLayout.addWidget(self.save, 3, 2, 1, 1)
+        self.save.setDisabled(True)
 
         self.loadExcel = QtWidgets.QPushButton(self.gridLayoutWidget)
         self.loadExcel.setObjectName("loadExcel")
@@ -267,16 +267,16 @@ class Ui_MainWindow(object):
         if answ == add:
             try:
                 corsoindex = self.excelView.selectedIndexes()[0]
-                id_us = self.excelView.model().data(corsoindex)
+                nomecorso = self.excelView.model().data(corsoindex)
                 msg = QMessageBox()
                 msg.setIcon(QMessageBox.Warning)
                 msg.setText("Attenzione")
-                msg.setInformativeText("Vuoi aggiungere il corso " + str(id_us) + "?")
+                msg.setInformativeText("Vuoi aggiungere il corso " + str(nomecorso) + "?")
                 msg.setWindowTitle("Aggiungi a Prolog")
                 msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
                 ret = msg.exec_()
                 if ret == QMessageBox.Ok:
-                    nomeCorso = QStandardItem(str((self.excelModel.index(corsoindex.row(), corsoindex.column()))))
+                    nomeCorso = QStandardItem(str(nomecorso))
                     nomeCorso.setBackground(QBrush(QColor(0, 255, 85, 200)))
                     self.prologModel.appendRow(nomeCorso)
                     ManageUI.Manage().setRows(self.prologModel, self.excelModel)
@@ -328,7 +328,7 @@ class Ui_MainWindow(object):
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Errore")
-            msg.setInformativeText("Non hai selezionato nessun file!")
+            msg.setInformativeText("Errore 4: nessun file selezionato.")
             msg.setWindowTitle("File non selezionato")
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()
@@ -350,11 +350,12 @@ class Ui_MainWindow(object):
             self.prologView.show()
             self.loadExcel.setEnabled(True)
             self.actionApri_Excel.setEnabled(True)
+            self.save.setDisabled(False)
         else:
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Critical)
             msg.setText("Errore")
-            msg.setInformativeText("Non hai selezionato nessun file!")
+            msg.setInformativeText("Errore 3: nessun file selezionato.")
             msg.setWindowTitle("File non selezionato")
             msg.setStandardButtons(QMessageBox.Ok)
             msg.exec_()

@@ -14,7 +14,11 @@ class ExcelDef():
 
 def addToList(excelFile, semester):
     for row in excelFile.iter_rows():
+
+        checkEqual()
+
         if (str(row[5].internal_value) == "EI" or str(row[5].internal_value) == "ETM" or str(row[5].internal_value) == "IAM") and (row[14].internal_value == str(semester) or row[14].internal_value == "Annuale"):
+
             list.append(ExcelDef(row[0].internal_value, #numero del corso presente nel file
                              str(row[1].internal_value), #nome del corso
                              row[5].internal_value, #cdl
@@ -25,7 +29,6 @@ def addToList(excelFile, semester):
                              row[16].internal_value, #ore
                              row[29].internal_value, #docente
                              ))
-    checkEqual()
 
 def checkEqual():
     last = ExcelDef("","","","","","","","","")
@@ -41,8 +44,6 @@ def checkEqual():
 
 
 def getExcelList():
-    for element in list:
-        print(element.nomeCorso + " " + element.cdl)
     list.sort(key=lambda x: x.nomeCorso, reverse=False)
     return list
 

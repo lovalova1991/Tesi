@@ -65,12 +65,15 @@ class Manage():
                 toAdd.setBackground(QBrush(QColor(255, 0, 0, 100)))
                 prologModel.setItem(row, 2, toAdd)
 
-            elif str(excelModel.data(excelModel.index(row, 2))).lower() != str(prologModel.data(prologModel.index(row, 4))).lower(): #confronto seguitoda
-                toAdd = QStandardItem(str(prologModel.data(prologModel.index(row, 4))))
-                toAdd.setBackground(QBrush(QColor(255, 0, 0, 100)))
-                prologModel.setItem(row, 4, toAdd)
-
             elif str(excelModel.data(excelModel.index(row, 3))).lower() != str(prologModel.data(prologModel.index(row, 4))).lower(): #confronto ore
                 toAdd = QStandardItem(str(prologModel.data(prologModel.index(row, 5))))
                 toAdd.setBackground(QBrush(QColor(255, 0, 0, 100)))
                 prologModel.setItem(row, 5, toAdd)
+
+            """"
+            elif str(excelModel.data(excelModel.index(row, 2))).lower() != str(prologModel.data(prologModel.index(row, 4))).lower(): #confronto seguitoda
+                toAdd = QStandardItem(str(prologModel.data(prologModel.index(row, 4))))
+                toAdd.setBackground(QBrush(QColor(255, 0, 0, 100)))
+                prologModel.setItem(row, 4, toAdd)
+            """
+
