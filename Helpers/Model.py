@@ -91,6 +91,7 @@ class CreateModel:
         if (len(listNewCorsi) > 0):
             msg = QMessageBox()
             msg.setIcon(QMessageBox.Information)
+            msg.resize(400, 400)
             msg.setText("Attenzione")
             msg.setInformativeText("Sono stati aggiunti dei corsi!")
             msg.setWindowTitle("Attenzione")
@@ -99,6 +100,7 @@ class CreateModel:
                 toPrint = str(toPrint) + "*" + str(element.nomecorso) + "\n"
             msg.setDetailedText(toPrint)
             msg.exec_()
+
         try:
             self.tableModel = QStandardItemModel()
             self.tableModel.setHorizontalHeaderItem(0, QStandardItem("Nome Corso"))

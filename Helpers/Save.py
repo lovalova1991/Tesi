@@ -1,3 +1,5 @@
+from PyQt5.QtWidgets import QMessageBox
+
 
 class SaveFile():
     def saveProlog(self, prologModel, filename, prologToSave):
@@ -24,7 +26,14 @@ class SaveFile():
                 else:
                     commento = "% " + commento
             except TypeError:
-                print("ops")
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Critical)
+                msg.setText("Errore")
+                msg.setInformativeText("Errore 5: contenuto non valido.")
+                msg.setWindowTitle("Errore")
+                msg.setStandardButtons(QMessageBox.Ok)
+                msg.exec_()
+                return
 
             stringToPrint = "corso(" + str(nomeschem).replace("(", "").replace(")", "").replace("'","")  + \
                             str(docente).replace("(", "").replace(")", "").replace("'","") + \
@@ -43,16 +52,26 @@ class SaveFile():
         file = open(prologToSave, 'r')
         out_file = open(filename, "w")
         counter = 0
-        for line in file:
-            if str(line).startswith("corso("):
-                if counter == len(self.toSaveList):
-                    continue
-                line = "%" + str(line)
-                out_file.writelines(line + "\n")
-                out_file.writelines(self.toSaveList[counter])
-                counter = counter + 1
-            else:
-                out_file.writelines(line)
+        try:
+            for line in file:
+                if str(line).startswith("corso("):
+                    if counter == len(self.toSaveList):
+                        continue
+                    line = "%" + str(line)
+                    out_file.writelines(line + "\n")
+                    out_file.writelines(self.toSaveList[counter])
+                    counter = counter + 1
+                else:
+                    out_file.writelines(line)
+        except Exception:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Critical)
+            msg.setText("Errore")
+            msg.setInformativeText("Errore 6: Salvataggio non riuscito.")
+            msg.setWindowTitle("Errore")
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.exec_()
+            return
         out_file.close()
 
 
