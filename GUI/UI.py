@@ -276,7 +276,7 @@ class Ui_MainWindow(object):
                 msg.setStandardButtons(QMessageBox.Ok | QMessageBox.Cancel)
                 ret = msg.exec_()
                 if ret == QMessageBox.Ok:
-                    nomeCorso = QStandardItem(str(self.excelModel.data(self.excelModel.index(corsoindex.row(), corsoindex.column()))))
+                    nomeCorso = QStandardItem(str((self.excelModel.index(corsoindex.row(), corsoindex.column()))))
                     nomeCorso.setBackground(QBrush(QColor(0, 255, 85, 200)))
                     self.prologModel.appendRow(nomeCorso)
                     ManageUI.Manage().setRows(self.prologModel, self.excelModel)

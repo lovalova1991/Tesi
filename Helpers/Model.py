@@ -82,8 +82,8 @@ class CreateModel:
         return self.prologModel
 
     def createExcelModel(self, excelView):
-        listCorsi = Compare.start()
-        listNewCorsi = Compare.getNewCorsi()
+        listCorsi = Compare.Compare().startCompare()
+        listNewCorsi = Compare.Compare().getNewCorsi()
         for element in listNewCorsi:
             listCorsi.append(element)
 
