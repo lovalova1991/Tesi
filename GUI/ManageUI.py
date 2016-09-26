@@ -4,21 +4,7 @@ from PyQt5.QtGui import QStandardItem
 
 
 class Manage():
-
-    def getElementsToRemove(self, excelModel):
-
-        for element in range(excelModel.rowCount()):
-
-            if str(excelModel.data(excelModel.index(element,0))).lower() == str(excelModel.data(excelModel.index(element + 1, 0))).lower():
-                if str(excelModel.data(excelModel.index(element, 0))).lower() == str(excelModel.data(excelModel.index(element + 2, 0))).lower():
-                    excelModel.removeRow(element)
-                    excelModel.removeRow(element+1)
-                else:
-                    excelModel.removeRow(element)
-
     def setRows(self, prologModel, excelModel):
-
-        self.getElementsToRemove(excelModel)
 
         for row in range(excelModel.rowCount()):
             nomeProlog = prologModel.data(prologModel.index(row, 0))

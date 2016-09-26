@@ -143,7 +143,7 @@ class CreateModel:
             self.tableModel.setItem(row, 2, seguitoda)
             self.tableModel.setItem(row, 3, anno)
 
-            if (listCorsi[row].numore == ""):
+            if (listCorsi[row].numore == None):
                 numoreHint.setBackground(QBrush(QColor(255,0,0,100)))
                 self.tableModel.setItem(row, 4, numoreHint)
             else:

@@ -50,7 +50,7 @@ class Compare():
                             #prologelement.numore è il totale di ore settimanali. Ogni corso ha durata 12 settimane quindi faccio il calcolo
                             oreTotProlog = float(prologelement.numore) * 12
                             if float(oreTotProlog) == float(excelelement.ore):
-                                numOre = prologelement.numore
+                                numOre = oreTotProlog
                             else:
                                 numOreHint = excelelement.ore / 12
                                 numOre = None

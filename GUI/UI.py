@@ -77,6 +77,7 @@ class Ui_MainWindow(object):
         self.excelView = QtWidgets.QTableView(self.gridLayoutWidget_2)
         self.excelView.setObjectName("excelView")
         self.gridLayout_2.addWidget(self.excelView, 1, 1, 1, 1)
+        self.excelView.resizeColumnsToContents()
 
         self.semestreLabel = QtWidgets.QLabel(self.gridLayoutWidget_2)
         self.semestreLabel.setObjectName("semestreLabel")
@@ -279,7 +280,6 @@ class Ui_MainWindow(object):
                     nomeCorso = QStandardItem(str(nomecorso))
                     nomeCorso.setBackground(QBrush(QColor(0, 255, 85, 200)))
                     self.prologModel.appendRow(nomeCorso)
-                    ManageUI.Manage().setRows(self.prologModel, self.excelModel)
                 elif ret == QMessageBox.Cancel:
                     msg.close()
             except Exception:
