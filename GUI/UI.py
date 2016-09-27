@@ -262,9 +262,6 @@ class Ui_MainWindow(object):
                 msg.close()
 
     def excelClicked(self, newpoint):
-        menu = QMenu()
-        add = menu.addAction("Aggiungi Corso..")
-        answ = menu.exec_(self.prologView.mapToGlobal(newpoint))
         if answ == add:
             try:
                 corsoindex = self.excelView.selectedIndexes()[0]
