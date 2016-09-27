@@ -42,7 +42,10 @@ class CreateModel:
             numore = QStandardItem(str(listProlog[row].numore))
             lab = QStandardItem(str(listProlog[row].lab))
             numslot = QStandardItem(str(listProlog[row].numslot))
-            slotdur = QStandardItem(str(listProlog[row].slotdur))
+            if str(listProlog[row].slotdur) != "None":
+                slotdur = QStandardItem(str(listProlog[row].slotdur))
+            else:
+                slotdur = QStandardItem("_")
             type = QStandardItem(str(listProlog[row].type))
             link = QStandardItem(str(listProlog[row].link))
 

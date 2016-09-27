@@ -7,7 +7,7 @@ class SaveFile():
         self.toSaveList = []
         for row in range(prologModel.rowCount()):
             try:
-                nomecorso = str(prologModel.data(prologModel.index(row, 0))),  # nomecorso
+                nomecorso = prologModel.data(prologModel.index(row, 0)),  # nomecorso
                 nomeschem = prologModel.data(prologModel.index(row, 1)),  # nome schematico
                 docente = prologModel.data(prologModel.index(row, 2)),  # docente
                 numstudenti = prologModel.data(prologModel.index(row, 3)),  # numero studenti
@@ -16,7 +16,7 @@ class SaveFile():
                 lab = prologModel.data(prologModel.index(row, 6)),  # lab
                 numslot = prologModel.data(prologModel.index(row, 7)),  # num slot
                 durataslot = prologModel.data(prologModel.index(row, 8)),  # durata slot
-                type = prologModel.data(prologModel.index(row,9)), # tipo
+                type = prologModel.data(prologModel.index(row, 9)), # tipo
                 link = prologModel.data(prologModel.index(row, 10)) #link
                 commento = prologModel.data(prologModel.index(row, 11)) #commento
 
@@ -34,7 +34,7 @@ class SaveFile():
                 msg.setWindowTitle("Errore")
                 msg.setStandardButtons(QMessageBox.Ok)
                 msg.exec_()
-                return
+
 
             stringToPrint = "corso(" + str(nomeschem).replace("(", "").replace(")", "").replace("'","")  + \
                             str(docente).replace("(", "").replace(")", "").replace("'","") + \
@@ -44,9 +44,9 @@ class SaveFile():
                             str(lab).replace("(", "").replace(")", "").replace("'","") + \
                             str(numslot).replace("(", "").replace(")", "").replace("'","").replace("/",",") + \
                             str(durataslot).replace("(", "").replace(")", "").replace("'","") + \
-                            str(type).replace("(", "").replace(")", "").replace("'","") \
-                             + "_," + str(nomecorso).replace("(", "").replace(")", "") .replace("'",'"')+ \
-                             '"' + str(link).replace("(", "").replace(")", "").replace("'","") + ").  " + str(commento)
+                            str(type).replace("('", "").replace("',)", ",").replace("'","") \
+                             + "_," + str(nomecorso).replace("('", '"').replace("',)", '"').replace('("','"').replace('",)', '"') + "," + '"' +\
+                            str(link).replace(" '", "") + '").' + str(commento)
 
             self.toSaveList.append(stringToPrint)
 
@@ -56,7 +56,11 @@ class SaveFile():
         try:
             out_file.writelines("%Creazione documento " + time.strftime("%d/%m/%Y"))
             for line in file:
-                if str(line).startswith("corso("):
+                if str(line).startswith("corso(un_lab_indisponibile,"):
+                    out_file.writelines(line)
+                elif str(line).startswith("corso(Nomecorso,"):
+                    out_file.writelines(line)
+                elif str(line).startswith("corso("):
                     if counter == len(self.toSaveList):
                         continue
                     line = "%" + str(line)

@@ -74,7 +74,8 @@ def addToList(corsoString):
 
         link = listlab[11].split(").", 1)[0].replace('"',"")
 
-
+    if slotdur == None:
+        slotdur = "_"
     listProlog.append(PrologDef(nomecorso, docente, numstudenti, seguitoda, numore, lab, numslot, slotdur, type, mysql, fullname, link))
 
 
