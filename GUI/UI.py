@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QMessageBox
 import webbrowser
 from Helpers import Readers, Model, Save
+from Types import Prolog, Excel
 from GUI import Resolution, ManageUI
 
 class Ui_MainWindow(object):
@@ -261,8 +262,7 @@ class Ui_MainWindow(object):
             elif ret == QMessageBox.Cancel:
                 msg.close()
 
-    def excelClicked(self, newpoint):
-        if answ == add:
+    def excelClicked(self):
             try:
                 corsoindex = self.excelView.selectedIndexes()[0]
                 nomecorso = self.excelView.model().data(corsoindex)
@@ -313,6 +313,8 @@ class Ui_MainWindow(object):
 
     def pickexcel(self):
         filename, _ = QFileDialog.getOpenFileName(filter="Excel files (*.xlsx)")
+        if Excel.getlengthList() > 0:
+            Excel.clearList()
         if filename != "":
             Readers.loadExcel(filename, self.prologFileName)
             self.excelLoaded.setText("File Excel selezionato: " + filename)
@@ -331,6 +333,8 @@ class Ui_MainWindow(object):
             msg.exec_()
 
     def pickprolog(self):
+        if Prolog.getlengthList() > 0:
+            Prolog.clearList()
         self.excelView.hide()
         self.excelLoaded.hide()
         filename, _ = QFileDialog.getOpenFileName(filter="Prolog files (*.pl)")

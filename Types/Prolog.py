@@ -24,7 +24,7 @@ def addToList(corsoString):
     secondParenthesis = 0
     if str(temp0[3]).startswith("[["):
         temp1 = str(temp0[3])
-        for i in range(4,20):  #messo un range di sicurezza provvisorio. Si può sostituire con un ciclo while
+        for i in range(4,40):  #messo un range di sicurezza provvisorio. Si può sostituire con un ciclo while
             if str(temp0[i]).endswith("]]"):
                 temp1 = temp1 + str(temp0[i])
                 lastParenthesis = i
@@ -59,6 +59,8 @@ def addToList(corsoString):
 
     if str(fullname).startswith("[pre"):
         return
+    elif str(fullname) == "[]" and str(seguitoda) == "[]":
+        print("newbe")
     elif str(fullname).startswith("[]"):
         listlab = str(corsoString).split(",")
         nomecorso = listlab[0]
@@ -82,3 +84,9 @@ def addToList(corsoString):
 def getPrologList():
     listProlog.sort(key=lambda x: str(x.fullname).lower(), reverse=False)
     return listProlog
+
+def getlengthList():
+    return len(listProlog)
+
+def clearList():
+    listProlog.clear()

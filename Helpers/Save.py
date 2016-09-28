@@ -22,7 +22,7 @@ class SaveFile():
 
                 if commento == None:
                     commento = " "
-                elif str(commento) == "Commenta...":
+                elif str(commento) == "Inserisci Commento...":
                     commento = " "
                 else:
                     commento = "% " + commento

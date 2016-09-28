@@ -36,9 +36,9 @@ class Compare():
                             #qui devo aggiungere uno spazio tra numero e parola
 
                             #trova le differenze docente
-                            if str(prologelement.docente).lower() != str(excelelement.docente).lower():
+                            if str(prologelement.docente).lower() not in str(excelelement.docente).lower():
                                 if str(excelelement.docente) == "":
-                                    docenteHint = prologelement.docente
+                                    docenteHint = "Tace"
                                     docente = None
                                 else:
                                     docenteHint = excelelement.docente
@@ -50,7 +50,7 @@ class Compare():
                             #prologelement.numore è il totale di ore settimanali. Ogni corso ha durata 12 settimane quindi faccio il calcolo
                             oreTotProlog = float(prologelement.numore) * 12
                             if float(oreTotProlog) == float(excelelement.ore):
-                                numOre = oreTotProlog
+                                numOre = prologelement.numore
                             else:
                                 numOreHint = excelelement.ore / 12
                                 numOre = None

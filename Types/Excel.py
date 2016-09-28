@@ -47,3 +47,8 @@ def getExcelList():
     list.sort(key=lambda x: x.nomeCorso, reverse=False)
     return list
 
+def getlengthList():
+    return len(list)
+
+def clearList():
+    list.clear()

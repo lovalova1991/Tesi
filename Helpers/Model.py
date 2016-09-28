@@ -17,7 +17,7 @@ class CreateModel:
                 listProlog.remove(element)
 
         self.prologModel = QStandardItemModel()
-
+        self.prologModel.modelReset
 
         self.prologModel.setHorizontalHeaderItem(0, QStandardItem("Nome Corso"))
         self.prologModel.setHorizontalHeaderItem(1, QStandardItem("Nome Schematico"))
@@ -78,7 +78,7 @@ class CreateModel:
             self.prologModel.setItem(row, 8, slotdur)
             self.prologModel.setItem(row, 9, type)
             self.prologModel.setItem(row, 10, link)
-            self.prologModel.setItem(row, 11, QStandardItem("Commenta..."))
+            self.prologModel.setItem(row, 11, QStandardItem("Inserisci Commento..."))
 
             prologView.resizeColumnsToContents()
 
