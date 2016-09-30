@@ -33,9 +33,9 @@ def loadExcel(filename, prologFileName):
     try:
         excel = load_workbook(filename, data_only=True)
         ws = excel['Corsi']
-        if str(prologFileName).endswith("1.pl"):
+        if "1" in str(prologFileName):
             Excel.addToList(ws, "1S")
-        elif str(prologFileName).endswith("3.pl"):
+        elif "3" in str(prologFileName) or "2" in str(prologFileName):
             Excel.addToList(ws, "2S")
         print("Excel Loaded")
 

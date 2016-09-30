@@ -343,9 +343,9 @@ class Ui_MainWindow(object):
             self.prologToSave = filename
             self.prologLoaded.setText("File Prolog selezionato: " + filename)
             self.prologModel = Model.CreateModel().createPrologModel(self.prologView)
-            if str(filename).endswith("1.pl"):
+            if "1" in str(filename):
                 self.semestreLabel.setText("1o Semestre")
-            elif str(filename).endswith("3.pl") or str(filename).endswith("2.pl"):
+            elif "2" in str(filename) or "3" in str(filename):
                 self.semestreLabel.setText("2o Semestre")
             self.label_7.show()
             self.prologView.show()
