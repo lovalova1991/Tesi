@@ -17,7 +17,7 @@ def addToList(excelFile, semester):
 
         checkEqual()
 
-        if (str(row[5].internal_value) == "EI" or str(row[5].internal_value) == "ETM" or str(row[5].internal_value) == "IAM") and (row[14].internal_value == str(semester) or row[14].internal_value == "Annuale"):
+        if (str(row[5].internal_value) == "EI" or str(row[5].internal_value) == "ETM" or str(row[5].internal_value) == "IAM") and (row[14].internal_value == str(semester) or row[14].internal_value == "Annuale") and (str(row[30].internal_value) != "tace"):
 
             list.append(ExcelDef(row[0].internal_value, #numero del corso presente nel file
                              str(row[1].internal_value), #nome del corso

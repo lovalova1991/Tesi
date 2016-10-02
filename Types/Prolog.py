@@ -70,6 +70,7 @@ def addToList(corsoString):
         numore = listlab[4]
         lab = listlab[5]
         numslot = listlab[6]
+        slotdur = listlab[7]
         type = listlab[8]
         mysql = listlab[9]
         fullname = listlab[10].replace('"',"")
