@@ -42,7 +42,7 @@ class Manage():
                 toAdd.setBackground(QBrush(QColor(255, 0, 0, 100)))
                 prologModel.setItem(row, 2, toAdd)
 
-            elif str(excelModel.data(excelModel.index(row, 3))).lower() != str(prologModel.data(prologModel.index(row, 4))).lower(): #confronto ore
+            elif str(excelModel.data(excelModel.index(row, 4))).lower() != str(prologModel.data(prologModel.index(row, 5))).lower(): #confronto ore
                 toAdd = QStandardItem(str(prologModel.data(prologModel.index(row, 5))))
                 toAdd.setBackground(QBrush(QColor(255, 0, 0, 100)))
                 prologModel.setItem(row, 5, toAdd)

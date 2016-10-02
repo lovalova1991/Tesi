@@ -8,6 +8,7 @@ from PyQt5.QtWidgets import QMenu
 from PyQt5.QtWidgets import QMessageBox
 import webbrowser
 from Helpers import Readers, Model, Save
+from Helpers.Compare import Compare
 from Types import Prolog, Excel
 from GUI import Resolution, ManageUI
 
@@ -315,6 +316,7 @@ class Ui_MainWindow(object):
         filename, _ = QFileDialog.getOpenFileName(filter="Excel files (*.xlsx)")
         if Excel.getlengthList() > 0:
             Excel.clearList()
+            Compare.clearNewList()
         if filename != "":
             Readers.loadExcel(filename, self.prologFileName)
             self.excelLoaded.setText("File Excel selezionato: " + filename)

@@ -67,3 +67,6 @@ class Compare():
 
     def getNewCorsi(self):
         return newCorsi
+
+    def clearNewList(self):
+        newCorsi.clear()
