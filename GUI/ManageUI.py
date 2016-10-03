@@ -6,14 +6,14 @@ from PyQt5.QtGui import QStandardItem
 class Manage():
     def setRows(self, prologModel, excelModel):
 
-        for row in range(excelModel.rowCount()):
+        for row in range(prologModel.rowCount()):
             nomeProlog = prologModel.data(prologModel.index(row, 0))
             nomeExcel = excelModel.data(excelModel.index(row, 0))
-            if str(nomeProlog).lower() != str(nomeExcel).lower():
+            if str(nomeProlog).lower() == str(nomeExcel).lower() or (str(nomeProlog).lower() + " ") == str(nomeExcel).lower():
+                pass
+            elif str(nomeProlog).lower() != str(nomeExcel).lower():
                 excelModel.insertRow(row)
-                pass
-            elif str(nomeProlog).lower() == str(nomeExcel).lower():
-                pass
+                continue
             elif str(nomeProlog) == "":
                 excelModel.insertRow(row)
             elif str(nomeProlog).lower() != str(nomeExcel).lower():

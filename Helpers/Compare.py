@@ -24,7 +24,7 @@ class Compare():
             for prologelement in prologlist:           #per ogni elemento nella lista del file excprologel
                     if str(prologelement.fullname).lower() == str(lastelement.fullname).lower():
                         break
-                    if str(prologelement.fullname).lower() == (str(excelelement.nomeCorso)).lower():
+                    if str(prologelement.fullname).lower() == str(excelelement.nomeCorso).lower() or (str(prologelement.fullname).lower() + " ") == (str(excelelement.nomeCorso).lower()):
                             lastelement = prologelement
                             #Controllo che dal file excel confronto solo i corsi di informatica ed elettronica
                             #Nome del corso è la chiave primaria

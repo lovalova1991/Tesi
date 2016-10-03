@@ -316,7 +316,7 @@ class Ui_MainWindow(object):
         filename, _ = QFileDialog.getOpenFileName(filter="Excel files (*.xlsx)")
         if Excel.getlengthList() > 0:
             Excel.clearList()
-            Compare.clearNewList()
+            Compare().clearNewList()
         if filename != "":
             Readers.loadExcel(filename, self.prologFileName)
             self.excelLoaded.setText("File Excel selezionato: " + filename)
