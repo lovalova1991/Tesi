@@ -128,9 +128,6 @@ class Ui_MainWindow(object):
         self.actionEsci.setObjectName("actionEsci")
         self.actionEsci.triggered.connect(self.quitbutton)
 
-        self.actionHelp = QtWidgets.QAction(MainWindow)
-        self.actionHelp.setObjectName("actionHelp")
-        self.actionHelp.triggered.connect(self.openHelpWindow)
         self.actionGitHub_Repo = QtWidgets.QAction(MainWindow)
         self.actionGitHub_Repo.setObjectName("actionGitHub_Repo")
         self.actionGitHub_Repo.triggered.connect(self.openBrowser)
@@ -144,7 +141,6 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionSalva)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionEsci)
-        self.menuInfo.addAction(self.actionHelp)
         self.menuInfo.addAction(self.actionGitHub_Repo)
         self.menuInfo.addSeparator()
         self.menuInfo.addAction(self.actionAbout)
@@ -183,8 +179,6 @@ class Ui_MainWindow(object):
                     self.excelView.scrollTo(self.excelView.model().index(row, i))
                     break
 
-    def openHelpWindow(self):
-        print("seconda finestra di help")
 
     def quitbutton(self):
         msg = QMessageBox()
@@ -308,8 +302,7 @@ class Ui_MainWindow(object):
         self.actionApri_Excel.setText(_translate("MainWindow", "Apri Excel.."))
         self.actionSalva.setText(_translate("MainWindow", "Salva"))
         self.actionEsci.setText(_translate("MainWindow", "Esci"))
-        self.actionHelp.setText(_translate("MainWindow", "Help"))
-        self.actionGitHub_Repo.setText(_translate("MainWindow", "GitHub Repo"))
+        self.actionGitHub_Repo.setText(_translate("MainWindow", "GitHub Repo / ReadMe"))
         self.actionAbout.setText(_translate("MainWindow", "About.."))
 
     def pickexcel(self):
