@@ -35,20 +35,19 @@ class SaveFile():
                 msg.setStandardButtons(QMessageBox.Ok)
                 msg.exec_()
 
-
-            stringToPrint = "corso(" + str(nomeschem).replace("(", "").replace(")", "").replace("'","")  + \
-                            str(docente).replace("(", "").replace(")", "").replace("'","") + \
-                            str(numstudenti).replace("(", "").replace(")", "").replace("'","")  + \
-                            str(seguitoda).replace("(", "").replace(")", "").replace("'","").replace('"',"") + \
-                            str(numore).replace("(", "").replace(")", "").replace("'","") + \
-                            str(lab).replace("(", "").replace(")", "").replace("'","") + \
-                            str(numslot).replace("(", "").replace(")", "").replace("'","").replace("/",",") + \
-                            str(durataslot).replace("(", "").replace(")", "").replace("'","") + \
-                            str(type).replace("('", "").replace("',)", ",").replace("'","") \
-                             + "_," + str(nomecorso).replace("('", '"').replace("',)", '"').replace('("','"').replace('",)', '"') + "," + '"' +\
-                            str(link).replace(" '", "") + '").' + str(commento)
-
-            self.toSaveList.append(stringToPrint)
+            if str(nomeschem) != "(None,)":
+                stringToPrint = "corso(" + str(nomeschem).replace("(", "").replace(")", "").replace("'","")  + \
+                                str(docente).replace("(", "").replace(")", "").replace("'","") + \
+                                str(numstudenti).replace("(", "").replace(")", "").replace("'","")  + \
+                                str(seguitoda).replace("(", "").replace(")", "").replace("'","").replace('"',"") + \
+                                str(numore).replace("(", "").replace(")", "").replace("'","") + \
+                                str(lab).replace("(", "").replace(")", "").replace("'","") + \
+                                str(numslot).replace("(", "").replace(")", "").replace("'","").replace("/",",") + \
+                                str(durataslot).replace("(", "").replace(")", "").replace("'","") + \
+                                str(type).replace("('", "").replace("',)", ",").replace("'","") \
+                                 + "_," + str(nomecorso).replace("('", '"').replace("',)", '"').replace('("','"').replace('",)', '"') + "," + '"' +\
+                                str(link).replace(" '", "") + '").' + str(commento)
+                self.toSaveList.append(stringToPrint)
 
         file = open(prologToSave, 'r')
         out_file = open(filename, "w")
